@@ -11,20 +11,20 @@
 
 ---
 
-## 🚀 Features
+##  Features
 
-- 📈 **Stock Price Prediction** using deep learning (RNN, LSTM)
-- 🪙 **Bitcoin & Cryptocurrency Price Forecasting**
-- 🕒 **Real-Time Stock Price Monitoring**
-- 📂 **Downloadable Historical Stock Data** (based on user-defined year ranges in JSON format)
-- 🧠 **News-Based Sentiment Analysis** for individual stocks
-- ⚖️ **Stock Comparison Dashboard** based on trends and news sentiment
-- 🗞 **Live Financial & Business News Feed**
-- 📊 **Interactive Visualizations** using `matplotlib`, `ggplot`
+-  **Stock Price Prediction** using deep learning (RNN, LSTM)
+-  **Bitcoin & Cryptocurrency Price Forecasting**
+-  **Real-Time Stock Price Monitoring**
+-  **Downloadable Historical Stock Data** (based on user-defined year ranges in JSON format)
+-  **News-Based Sentiment Analysis** for individual stocks
+-  **Stock Comparison Dashboard** based on trends and news sentiment
+-  **Live Financial & Business News Feed**
+-  **Interactive Visualizations** using `matplotlib`, `ggplot`
 
 ---
 
-## 🧠 Tech Stack
+##  Tech Stack
 
 | Category         | Tools/Frameworks                         |
 |------------------|-------------------------------------------|

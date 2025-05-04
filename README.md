@@ -42,7 +42,7 @@
 
 
 ## 🗂️ Project Structure
-'''
+```
 
 PROJECT OVERVIEW
 
@@ -142,7 +142,7 @@ project/
 
 
 
-'''
+```
 
 
 ---

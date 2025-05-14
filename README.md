@@ -67,7 +67,7 @@ project/
 │   └── utils.py                     # Helper functions for app1
 │   └── requirements.txt             # Dependencies for app1
 │
-├── app2/                            # Second Flask App (App2)    [ Prediction Model Crypto Currency]
+├── app2/                            # Second Flask App (App2)    [ Sentimental Analysis Model ]
 │   ├── venv/                        # Virtual environment for App2
 │   ├── __init__.py                  # Initializes the app2
 │   ├── routes.py                    # Routes for app2
@@ -96,7 +96,7 @@ project/
 │   └── utils.py                     # Helper functions for app2
 │   └── requirements.txt             # Dependencies for app2
 |
-├── app4/                            # Second Flask App (App4)    [ Data Extractions acording To the user ......] 
+├── app4/                            # Second Flask App (App4)    [ User can fetch data of various companies] 
 │   ├── venv/                        # Virtual environment for App3
 │   ├── __init__.py                  # Initializes the app3
 │   ├── routes.py                    # Routes for app2

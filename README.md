@@ -149,7 +149,7 @@ Key libraries powering App3 include **_yfinance_** for market data, **_pandas_**
 In summary, App3 empowers users to **analyze any stock or cryptocurrency**, evaluate historical performance, monitor risk, and identify trends using advanced multi-metric analytics—all within a responsive and interactive web dashboard.
 
 
-### GitHub-Style Workflow Diagram
+### Workflow Diagram
 
 ```mermaid
 graph TD

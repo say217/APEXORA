@@ -1,4 +1,4 @@
-# <img src="https://github.com/user-attachments/assets/4e781cc9-d9eb-41dd-97ae-a6d676d6177b" alt="Icon" width="50" height="50" style="border-radius:50%; vertical-align: -10px;"> APEXORA
+# <img src="https://github.com/user-attachments/assets/4e781cc9-d9eb-41dd-97ae-a6d676d6177b" alt="Icon" width="50" height="50" style="border-radius:50%; vertical-align: -10px;"> APEXORA.      (not deployed comming soon)
 
 ## Introduction
 

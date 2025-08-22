@@ -125,6 +125,55 @@ Data is sourced primarily from **Reddit** via the **PRAW library** and news APIs
 Results are visualized as static plots, such as bar charts or time-series graphs, and saved to the app4 **static folder**. These visualizations, generated using libraries like **matplotlib** or **seaborn**, allow users to quickly interpret sentiment trends. The module outputs sentiment scores, key headlines or posts, and plot URLs, which are accessible via the `/sentiment/` API endpoint. For performance optimization, transformer models are cached locally, and heavy computations can be offloaded to background workers using tools like **Celery**. Sensitive API keys are stored in **environment variables** to ensure security and maintain best practices.
 
 ---
+## Complete Flow Chart of Apexora
+```mermaid
+flowchart LR
+    %% ================== USERS ===================
+    U[User] -->|Login/Signup| A1[App2: User Authentication]
+    A1 -->|Verify Credentials| DB[(SQLite Database)]
+    U -->|Access Home| A0[App1: Home Page]
+
+    %% ================== STATISTICAL ANALYSIS ===================
+    U -->|Request Stats| A3[App3: Statistical Analysis]
+    A3 -->|Run Analysis| DB
+
+    %% ================== SENTIMENT ANALYSIS ===================
+    U -->|News & Reddit Posts| A4[App4: Sentiment Analysis]
+    A4 -->|Fetch Text Data| EXT1[News APIs & Reddit]
+    EXT1 --> A4
+    A4 -->|Analyze & Show Sentiments| U
+
+    %% ================== DATA COLLECTION & ETL ===================
+    U -->|Collect Data| A5[App5: Data Collection & ETL]
+    A5 -->|Fetch Market Data| YF1[yFinance API]
+    A5 -->|Transform & Store| DB
+    DB --> A5
+
+    %% ================== COMPANY METRICS ===================
+    U -->|Company Metrics| A6[App6: Company Metrics]
+    A6 -->|Fetch Meta Data| YF2[yFinance API]
+    YF2 --> A6
+    A6 -->|Display Metrics| U
+
+    %% ================== NEWS & AFFAIRS ===================
+    U -->|Get News| A7[App7: News & Affairs]
+    A7 -->|Fetch Global News| EXT2[News APIs]
+    EXT2 --> A7
+    A7 --> U
+
+    %% ================== PREDICTION PIPELINE ===================
+    U -->|Stock/Crypto Prediction| P1[Prediction Model App]
+    P1 -->|Collect Data| YF3[yFinance API]
+    P1 -->|Deliver to DL Pipeline| DL[Deep Learning Models]
+    DL -->|Predictions| P1
+    P1 --> U
+
+    %% ================== RELATIONSHIPS ===================
+    DB --> A3
+    DB --> A4
+    DB --> P1
+```
+
 
 # Statistical Analysis & Multi-Metric Dashboard
 

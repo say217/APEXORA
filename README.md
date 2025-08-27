@@ -224,110 +224,244 @@ graph TD
 
 # Apexora: Stock Price Forecasting Web Application
 
-Apexora is a **Flask-based web application** that forecasts stock prices using a **bidirectional Long Short-Term Memory (LSTM)** neural network with an **attention mechanism**. It predicts future prices based on historical stock data and technical indicators, offering users a web interface to input a stock ticker, view performance metrics, compare historical and predicted prices, and access a seven-day price forecast with confidence intervals. The system is modular, handling data retrieval, preprocessing, model training, evaluation, and visualization efficiently.
+# Enhanced Stock Predictor: Overview
+
+The enhanced stock predictor is a sophisticated deep learning system designed for forecasting stock prices. It leverages a hybrid model combining Conv1D layers, bidirectional Gated Recurrent Units (BiGRU), and a scaled dot-product attention mechanism. This document provides a comprehensive, paragraph-based explanation of the workflow, emphasizing feature engineering, technical indicators, data processing, and the EnhancedGRU model’s architecture and functionality. The goal is to give a clear understanding of the system’s components, their roles, and how they contribute to robust stock price predictions, without relying on mathematical equations.
 
 ---
 
-## Architecture
+## Workflow Overview
 
-The application is structured as a **modular system**, separating concerns such as configuration, data handling, model definition, training, and web interface to ensure maintainability and scalability. Data flows from user input through data retrieval and preprocessing, to model training and prediction, and finally to visualization and result rendering.  
+The workflow starts with the user entering a stock ticker symbol, such as AAPL or TSLA, with AAPL as the default if no input is provided. Historical stock data is retrieved from Yahoo Finance using the `yfinance` library, spanning from January 1, 2022, to the current date, August 27, 2025. To optimize performance, the data is cached locally in a pickle file, allowing quick access for subsequent runs without re-downloading. 
 
-The architecture leverages a **bidirectional LSTM model enhanced with an attention mechanism** to capture complex temporal patterns in stock data, augmented by **technical indicators** to enrich feature sets. The **Flask web framework** serves as the user interface, enabling seamless interaction with the backend processes.  
+The raw data undergoes extensive preprocessing, including the addition of various technical indicators to capture market patterns, handling missing or invalid values, and normalizing the data to a consistent scale. The processed data is then organized into 40-day sequences, split into 80% for training and 20% for testing, and loaded into PyTorch DataLoaders for efficient batch processing. 
 
-The system handles the entire pipeline—from fetching raw data to delivering actionable insights—within a single, cohesive application.
-
----
-### Technical Indicators
-```
-Apexora enriches its feature set with technical indicators to capture market trends and volatility:
-
-- `Simple Moving Average (SMA_10)`: 10-day average of closing prices to smooth short-term fluctuations.
-- `Relative Strength Index (RSI)`: 14-day momentum indicator measuring price movement speed and strength.
-- `Moving Average Convergence Divergence (MACD)`: Difference between 12-day and 26-day EMAs to detect trend shifts.
-- `Bollinger Bands (BB_Upper, BB_Lower)`: 20-day SMA ± 2 standard deviations to gauge volatility and reversals.
-- `Average True Range (ATR)`: 14-day volatility measure based on price range.
-- `Exponential Moving Averages (EMA_20, EMA_50, EMA_200)`: Weighted averages emphasizing recent prices over 20, 50, and 200 days.
-- `Weighted Moving Average (WMA_20)`: 20-day average with linear weights for recent data.
-- `Hull Moving Average (HMA_20)`: 20-day average to reduce lag and improve responsiveness.
-- `Stochastic Oscillator (%K, %D)`: 14-day indicator for overbought/oversold conditions.
-- `Williams %R`: 14-day momentum indicator for overbought/oversold levels.
-- `Commodity Channel Index (CCI)`: 20-day indicator for cyclical trends and reversals.
-- `Momentum (Momentum_10)`: Price change over 10 days to capture short-term trends.
-- `On-Balance Volume (OBV)`: Cumulative volume tracking buying/selling pressure.
-- `Chaikin Money Flow (CMF)`: 20-day measure of price-volume-based pressure.
-- `Volume Rate of Change (VROC)`: 10-day percentage change in trading volume.
-
-
-- `Donchian Channels (Donchian_High, Donchian_Low)`: 20-day high/low prices for breakout detection.
-- `Keltner Channels (KC_Upper, KC_Lower)`: Volatility bands using 20-day EMA and ATR.
-- `Additional Features`: Daily price change, log-transformed closing price, 10-day volatility.
-```
-
-## Components
-### Config
-
-The **Config component** serves as the backbone of Apexora, centralizing all application settings to maintain consistency across modules. It defines the stock ticker symbol (e.g., `AAPL`), the date range for historical data (defaulting from January 1, 2021, to the current date), and the feature set, which includes core price data such as `Close`, `High`, `Low`, `Open`, and `Volume`, along with a comprehensive suite of technical indicators. In addition, the Config component specifies model hyperparameters, including the number of LSTM units, layers, and dropout rates, as well as training parameters such as epochs, batch size, and learning rate. This centralized configuration allows easy adjustments and experimentation without modifying the core code.
+The EnhancedGRU model is trained using the Adam optimizer, Huber loss for robust error handling, mixed precision for faster GPU computation, gradient clipping to stabilize training, and early stopping to prevent overfitting. After training, the model evaluates performance on the test set using metrics such as root mean squared error (RMSE), mean absolute error (MAE), R-squared (R²), and directional accuracy. It also generates recursive forecasts for the next four days by default, feeding predicted values back into the model. Results are visualized through plots showing historical prices, predictions, and forecast confidence intervals, along with feature distribution histograms and correlation heatmaps for deeper insights.
 
 ---
 
-### DataHandler
+## Feature Engineering and Technical Indicators
 
-The **DataHandler component** manages the acquisition and preprocessing of stock data. It downloads historical stock prices using **yfinance** and calculates a wide range of technical indicators. The component handles missing or invalid data by replacing infinities or `NaN` values with zeros or mean values to ensure clean datasets. Features are then scaled using **MinMaxScaler** from **scikit-learn** to normalize the data for model training. Finally, the DataHandler prepares sequences for the LSTM model by creating sliding windows of historical data, ensuring that the model receives correctly formatted time-series inputs.
+Feature engineering is a cornerstone of the system, transforming raw stock data into a rich, multivariate time-series input that captures diverse market dynamics. The script combines raw price data with a carefully selected set of technical indicators to enhance the model’s ability to detect trends, momentum, volatility, and market sentiment. Below is a paragraph-based explanation of the features and technical indicators, focusing on their purpose and computation process.
+
+### Base Features
+
+- **Close:** The closing price is the stock’s final trading price at the end of each day and serves as the primary target for prediction. It reflects the market’s valuation of the stock at a given point, making it central for forecasting future prices.  
+- **High:** The highest price reached during the trading day captures the peak of intraday activity. This feature helps the model understand the upper bounds of price movements, providing insight into intraday volatility and market enthusiasm.  
+- **Low:** The lowest price during the trading day complements the high price, indicating the trough of intraday fluctuations. Together with the high price, it provides a complete picture of the day’s price range, aiding in volatility analysis.
+
+These base features are directly obtained from Yahoo Finance data and form the foundation for modeling price dynamics, as they represent raw market behavior.
+
+
+# Technical Indicators
+
+To enrich the dataset, the script computes 15 technical indicators. Each indicator is designed to capture specific aspects of market behavior, such as trends, momentum, volatility, or potential reversals. These indicators are derived from the raw price data and added to provide the model with broader context for prediction.
+
+### Key Technical Indicators
+
+- **SMA_10 (10-Day Simple Moving Average):** Calculates the average closing price over the past 10 trading days. It smooths short-term fluctuations, helping the model identify the overall trend direction—upward, downward, or sideways.
+
+- **RSI (Relative Strength Index, 14-Day):** Measures the speed and change of price movements over a 14-day period to assess if a stock is overbought or oversold. High values (above 70) indicate overbought conditions; low values (below 30) suggest oversold conditions, assisting the model in detecting potential reversals.
+
+- **MACD (Moving Average Convergence Divergence):** Computed by subtracting the 26-day EMA from the 12-day EMA of the closing price. Highlights the relationship between short-term and long-term trends, helping detect momentum shifts and potential trend reversals.
+
+- **BB_Upper and BB_Lower (Bollinger Bands, 20-Day):** Composed of a 20-day SMA with upper and lower bands set two standard deviations from the mean. These bands measure volatility and help the model identify unusually high or low prices relative to recent history.
+
+- **ATR (Average True Range, 14-Day):** Measures market volatility by averaging the largest of three values over 14 days: the daily high-low range, high-to-previous-close, and low-to-previous-close. Helps the model understand typical price movements and assess risk.
+
+- **Price_Change (Daily Percentage Change):** Calculates the percentage change in closing price from one day to the next. Captures daily momentum and directional trends.
+
+- **Log_Close (Logarithmic Close Price):** Applies a logarithmic transformation to stabilize variance and handle large price swings, improving the model’s ability to learn non-linear patterns.
+
+- **Volatility_10, Volatility_20, Volatility_50 (Rolling Standard Deviation):** Measure the standard deviation of daily percentage changes over 10, 20, and 50 days, capturing short-, medium-, and long-term volatility.
+
+- **Momentum_5 and Momentum_10:** Compute the difference between current closing price and closing price 5 or 10 days ago. Measures directional momentum to detect sustained upward or downward trends.
+
+- **EMA_10 and EMA_20 (Exponential Moving Average):** Weighted averages of closing prices over 10 and 20 days, giving more weight to recent prices. React faster to recent changes than SMA, identifying short- and medium-term trends.
+
+These technical indicators collectively provide a comprehensive view of stock behavior, capturing patterns that raw prices alone might miss. The script ensures robustness by verifying feature availability and falling back to the closing price if any indicator cannot be computed.
 
 ---
 
-### StockDataset
+# Data Processing
 
-The **StockDataset component** is a custom **PyTorch Dataset** class designed to convert the preprocessed data into tensors suitable for training and evaluation. It structures the data into input-target pairs, where inputs are sequences of features (including both price data and technical indicators), and targets are the corresponding future stock prices. This component ensures seamless compatibility with PyTorch’s **DataLoader**, allowing efficient batch processing during model training.
+Data processing transforms raw stock data into a format suitable for model training, ensuring reliability and consistency. The process involves several steps:
+
+### 1. Data Download
+
+- Uses the `yfinance` library to fetch daily stock data, including open, high, low, close, and volume (OHLCV) prices.
+- Caches the data in a pickle file (e.g., `data_AAPL.pkl`) to avoid redundant downloads.
+- Includes error handling to ensure the data contains critical columns (e.g., Close) and sufficient samples (at least 40 days).
+
+### 2. Handling Missing and Invalid Values
+
+- **Forward-filling:** Uses the most recent valid value to fill missing data, preserving the time-series nature.  
+- **Mean imputation:** Replaces any remaining missing values with the column mean.  
+- **Infinities/invalid numbers:** Replaced with the mean.  
+- **Fallback:** Any persistent gaps are filled with zeros to ensure numerical stability.
+
+### 3. Feature Scaling
+
+- All features (raw prices and technical indicators) are normalized to a range of 0 to 1 using `MinMaxScaler`.
+- This prevents bias toward larger-value features and ensures equal contribution to the model.
+- The scaler is saved for later use to convert predictions back to original price units.
+
+### 4. Sequence Creation
+
+- Segments the data into 40-day sequences, each containing all features for 40 consecutive days.  
+- The target for each sequence is the scaled closing price of the next day.  
+- This creates a time-series input suitable for the model, capturing historical patterns leading to the prediction.
+
+### 5. Train/Test Split
+
+- Sequences are split into 80% for training and 20% for testing.  
+- Temporal order is preserved to reflect real-world forecasting scenarios, ensuring the model trains on earlier data and tests on more recent data.
+
+### 6. DataLoader Setup
+
+- Converts sequences into PyTorch tensors using a custom `StockDataset` class.  
+- Uses PyTorch `DataLoader` with batch size 64.  
+- Shuffling is enabled for training to promote generalization, but disabled for testing to preserve temporal sequence.
 
 ---
 
-### EnhancedLSTM
+This structured approach ensures that the model receives clean, normalized, and temporally consistent data, with engineered features that enhance predictive accuracy.
+# Enhanced GRU Model: Detailed Explanation
 
-The **EnhancedLSTM component** defines the core deep learning model. It uses a **bidirectional LSTM** to process sequences in both forward and backward directions, capturing temporal dependencies more effectively than a unidirectional LSTM. The model consists of multiple LSTM layers with configurable units and dropout for regularization, and a fully connected layer that produces the next-day closing price prediction. An integrated **attention mechanism** allows the model to focus on the most relevant time steps in the sequence, improving prediction accuracy for complex and volatile market patterns.
-
----
-
-### Attention
-
-The **Attention component** complements the LSTM model by assigning weights to different time steps in the LSTM output. By emphasizing the most critical historical patterns, it enhances the model’s ability to capture long-term dependencies and significant market signals. This mechanism is particularly effective for noisy or highly volatile stock data, improving overall forecasting accuracy.
+The EnhancedGRU model is a hybrid neural network tailored for time-series forecasting. It combines convolutional layers, bidirectional GRU, and an attention mechanism to capture complex patterns in stock data. Below is a paragraph-based explanation of its components and functionality.
 
 ---
 
+## Model Architecture
+
+**Conv1D Layers:**  
+The model begins with two parallel 1D convolutional layers, one with a kernel size of 3 and another with a kernel size of 5. These layers process input sequences consisting of 40 time steps and multiple features (e.g., Close, RSI, etc.). The convolutions extract local patterns such as short-term price trends or spikes by applying filters that slide over the time dimension. Padding ensures that the output sequence length remains 40. A ReLU activation function introduces non-linearity, and the outputs of both convolutional layers are concatenated, doubling the feature dimension to provide a richer representation of the input data.
+
+**Bidirectional GRU:**  
+The concatenated convolutional outputs feed into a bidirectional GRU with a hidden size of 128 and one layer. Unlike standard GRUs, which process sequences in one direction, the bidirectional GRU processes the sequence forward and backward, capturing both past and future contexts within the 40-day window. This is particularly useful for stock data, where future price movements may depend on historical trends and recent shifts. The GRU’s gating mechanisms regulate the flow of information, allowing the model to retain long-term dependencies while focusing on relevant patterns.
+
+**Scaled Dot-Product Attention:**  
+An attention mechanism follows the GRU, enabling the model to focus on the most relevant time steps within the 40-day sequence. It computes attention scores by comparing the GRU outputs to themselves, scales the scores to stabilize gradients, and applies a softmax function to produce weights. These weights determine how much each time step contributes to the final prediction, creating a context vector that summarizes the most important information. This adaptive focus improves the model’s ability to prioritize key market events.
+
+**Output Processing:**  
+The context vector from the attention mechanism undergoes layer normalization to stabilize values and reduce training variability. A dropout layer with a 15% rate is applied to prevent overfitting by randomly disabling some connections during training. Finally, a linear layer transforms the context vector into a single value, representing the predicted scaled closing price for the next day.
+
+---
+
+## Training Process
+
+The model is trained using the Huber loss function, which combines the benefits of mean squared error (for small errors) and mean absolute error (for larger errors), making it robust to outliers in stock data. The Adam optimizer, with an initial learning rate of 0.0005, adjusts the model’s weights to minimize the loss. A learning rate scheduler reduces the learning rate by half if the validation loss does not improve for 10 epochs, helping the model converge effectively. Mixed precision training, enabled via `torch.cuda.amp`, speeds up computation and reduces memory usage on GPUs. Gradient clipping limits the magnitude of weight updates to prevent instability, and early stopping halts training if the validation loss plateaus for 15 epochs, saving the best model to a checkpoint file.
+
+---
+
+## Evaluation and Forecasting
+
+**Evaluation Metrics:**  
+The model evaluates performance on the test set using several metrics to assess prediction accuracy and trend reliability:  
+- **Root Mean Squared Error (RMSE):** Measures the average magnitude of prediction errors, emphasizing larger deviations.  
+- **Mean Absolute Error (MAE):** Calculates the average absolute difference between predicted and actual prices, providing a straightforward error measure.  
+- **R-squared (R²):** Indicates how well the model explains variance in the actual data, with values closer to 1 showing better fit.  
+- **Directional Accuracy:** Assesses the percentage of times the model correctly predicts the direction of price movement (up or down), which is crucial for trading decisions.
+
+**Forecasting:**  
+Predictions for the next four days are generated using a recursive strategy. The model starts with the last 40-day window of scaled features, predicts the next day’s closing price, and shifts the window to include the predicted value while dropping the oldest day. This process repeats for four days, producing a sequence of future prices. Predictions are converted back to the original price scale using the saved MinMaxScaler. Confidence intervals are added to the forecasts, calculated as the predicted price plus or minus the standard deviation of errors from the test set (or 10% of the forecast variance if test errors are unavailable), providing a range of likely outcomes.
 
 
-### Trainer
 
-The **Trainer component** orchestrates the training and evaluation of the model. It employs the **Adam optimizer** with a learning rate of `0.001` and uses **Mean Squared Error (MSE)** as the loss function. To dynamically adjust the learning rate, it incorporates a **ReduceLROnPlateau scheduler**, which reduces the learning rate by a factor of 0.5 if the validation loss plateaus for 10 epochs. Gradient clipping with a maximum norm of 1.0 is applied to prevent exploding gradients, and **early stopping** halts training if the validation loss does not improve for 15 consecutive epochs. For evaluation, the Trainer calculates metrics including Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), R² score, and directional accuracy, which measures the percentage of correctly predicted price movement directions. Finally, the Trainer generates predictions for both the test dataset and future stock forecasts.
 
 # Diagram Workflow
 ```mermaid
 graph TD
-    A[User Input: Stock Ticker] -->|Web Interface| B[Flask Application]
-    B --> C[Data Retrieval]
-    C -->|Fetch Historical Data| D[Data Preprocessing]
-    D -->|Compute Technical Indicators| E[Feature Scaling]
-    E -->|Create Sequences| F[StockDataset]
-    F -->|PyTorch Tensors| G[EnhancedLSTM Model]
-    G -->|Bidirectional LSTM + Attention| H[Model Training]
-    H -->|Adam Optimizer, MSE Loss| I[Evaluation]
-    I -->|RMSE, MAE, R², Directional Accuracy| J[Forecasting]
-    J -->|7-Day Prediction + Confidence Intervals| K[Visualization]
-    K -->|Matplotlib Plots| L[Render Results]
-    L -->|Metrics, Plots, Forecast Table| B
-
-    style A fill:#1f1f1f,stroke:#00ff88,stroke-width:2px,color:#00ff88
-    style B fill:#2a2a2a,stroke:#00ff88,stroke-width:2px,color:#00ff88
-    style C fill:#3b3b3b,stroke:#00ff88,stroke-width:2px,color:#00ff88
-    style D fill:#3b3b3b,stroke:#00ff88,stroke-width:2px,color:#00ff88
-    style E fill:#3b3b3b,stroke:#00ff88,stroke-width:2px,color:#00ff88
-    style F fill:#3b3b3b,stroke:#00ff88,stroke-width:2px,color:#00ff88
-    style G fill:#4a4a4a,stroke:#ff007a,stroke-width:2px,color:#ff007a
-    style H fill:#4a4a4a,stroke:#ff007a,stroke-width:2px,color:#ff007a
-    style I fill:#4a4a4a,stroke:#ff007a,stroke-width:2px,color:#ff007a
-    style J fill:#4a4a4a,stroke:#ff007a,stroke-width:2px,color:#ff007a
-    style K fill:#3b3b3b,stroke:#00ff88,stroke-width:2px,color:#00ff88
-    style L fill:#2a2a2a,stroke:#00ff88,stroke-width:2px,color:#00ff88
+    A[User Input: Ticker Symbol] --> B[DataHandler]
+    
+    subgraph Data Acquisition
+        B -->|yfinance| C[Download Data]
+        C -->|Cache| D[Local .pkl File]
+        C --> E[Raw OHLCV Data]
+    end
+    
+    subgraph Preprocessing
+        E --> F[Add Technical Indicators]
+        F -->|SMA_10, RSI, MACD, etc.| G[Feature Enrichment]
+        G --> H[Handle Missing Values]
+        H -->|Forward Fill, Mean Imputation| I[Scaled Features]
+        I -->|MinMaxScaler| J[Sequence Creation]
+        J -->|40-day Windows| K[Train/Test Split]
+        K --> L[PyTorch DataLoader]
+    end
+    
+    subgraph Model Architecture: EnhancedGRU
+        L --> M[Conv1D Layers]
+        M -->|Kernel 3, 5; ReLU| N[Concatenated Features]
+        N --> O[Bidirectional GRU]
+        O -->|Hidden Size 128| P[Attention Mechanism]
+        P -->|Scaled Dot-Product| Q[LayerNorm + Dropout]
+        Q -->|0.15 Dropout| R[Linear Output]
+        R --> S[Predicted Close Price]
+    end
+    
+    subgraph Training
+        L --> T[Trainer]
+        T -->|Adam, Huber Loss| U[Training Loop]
+        U -->|Mixed Precision, Grad Clipping| V[Early Stopping]
+        V -->|Save Best Model| W[Model Checkpoint]
+    end
+    
+    subgraph Evaluation
+        W --> X[Evaluate on Test Set]
+        X -->|RMSE, MAE, R², Directional Acc| Y[Performance Metrics]
+    end
+    
+    subgraph Forecasting
+        W --> Z[Recursive Prediction]
+        Z -->|Last 40-day Window| AA[4-Day Forecast]
+        AA -->|Inverse Transform| AB[Future Prices]
+    end
+    
+    subgraph Visualization
+        Y --> AC[Prediction Plot]
+        AB --> AD[Forecast Plot with Confidence]
+        I --> AE[Feature Histograms]
+        I --> AF[Correlation Heatmap]
+        AC -->|Dark Theme| AG[Matplotlib/Seaborn]
+        AD --> AG
+        AE --> AG
+        AF --> AG
+    end
+    
+    style A fill:#1c2526,stroke:#00ff00,stroke-width:2px,color:#ffffff
+    style B fill:#2c3e50,stroke:#00ff00,stroke-width:2px,color:#ffffff
+    style C fill:#2c3e50,stroke:#00ff00,stroke-width:2px,color:#ffffff
+    style D fill:#2c3e50,stroke:#00ff00,stroke-width:2px,color:#ffffff
+    style E fill:#2c3e50,stroke:#00ff00,stroke-width:2px,color:#ffffff
+    style F fill:#34495e,stroke:#00f7ff,stroke-width:2px,color:#ffffff
+    style G fill:#34495e,stroke:#00f7ff,stroke-width:2px,color:#ffffff
+    style H fill:#34495e,stroke:#00f7ff,stroke-width:2px,color:#ffffff
+    style I fill:#34495e,stroke:#00f7ff,stroke-width:2px,color:#ffffff
+    style J fill:#34495e,stroke:#00f7ff,stroke-width:2px,color:#ffffff
+    style K fill:#34495e,stroke:#00f7ff,stroke-width:2px,color:#ffffff
+    style L fill:#34495e,stroke:#00f7ff,stroke-width:2px,color:#ffffff
+    style M fill:#4b6584,stroke:#ff00ff,stroke-width:2px,color:#ffffff
+    style N fill:#4b6584,stroke:#ff00ff,stroke-width:2px,color:#ffffff
+    style O fill:#4b6584,stroke:#ff00ff,stroke-width:2px,color:#ffffff
+    style P fill:#4b6584,stroke:#ff00ff,stroke-width:2px,color:#ffffff
+    style Q fill:#4b6584,stroke:#ff00ff,stroke-width:2px,color:#ffffff
+    style R fill:#4b6584,stroke:#ff00ff,stroke-width:2px,color:#ffffff
+    style S fill:#4b6584,stroke:#ff00ff,stroke-width:2px,color:#ffffff
+    style T fill:#636e72,stroke:#ffff00,stroke-width:2px,color:#ffffff
+    style U fill:#636e72,stroke:#ffff00,stroke-width:2px,color:#ffffff
+    style V fill:#636e72,stroke:#ffff00,stroke-width:2px,color:#ffffff
+    style W fill:#636e72,stroke:#ffff00,stroke-width:2px,color:#ffffff
+    style X fill:#2d3436,stroke:#00ffab,stroke-width:2px,color:#ffffff
+    style Y fill:#2d3436,stroke:#00ffab,stroke-width:2px,color:#ffffff
+    style Z fill:#2d3436,stroke:#ff6f61,stroke-width:2px,color:#ffffff
+    style AA fill:#2d3436,stroke:#ff6f61,stroke-width:2px,color:#ffffff
+    style AB fill:#2d3436,stroke:#ff6f61,stroke-width:2px,color:#ffffff
+    style AC fill:#353b48,stroke:#ffd700,stroke-width:2px,color:#ffffff
+    style AD fill:#353b48,stroke:#ffd700,stroke-width:2px,color:#ffffff
+    style AE fill:#353b48,stroke:#ffd700,stroke-width:2px,color:#ffffff
+    style AF fill:#353b48,stroke:#ffd700,stroke-width:2px,color:#ffffff
+    style AG fill:#353b48,stroke:#ffd700,stroke-width:2px,color:#ffffff
 ```
 
 

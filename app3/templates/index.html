@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <title>APEXORA</title>
+    <link rel="icon" href="https://tse1.mm.bing.net/th/id/OIP.55_1bcw1pR_H21Lgc2qpAwAAAA?rs=1&pid=ImgDetMain" type="image/png">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', 'Inter', 'Roboto', sans-serif;
+    background-color: #000000; /* solid black background */
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 12px 12px;
+    background-blend-mode: normal;
+    color: #f0f0f5;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 20%, rgba(138, 43, 226, 0.1), transparent 70%);
+    z-index: -1;
+    opacity: 0.3;
+    animation: fadeIn 1.2s ease-out forwards;
+}
+
+/* New radial glow at middle-top */
+body::after {
+    content: '';
+    position: absolute;
+    top: -3%; /* moved more upwards from 10% */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;  /* Glow size */
+    height: 400px; /* Glow size */
+    background: radial-gradient(circle, rgba(138, 43, 226, 0.3), transparent 70%);
+    z-index: -1;
+    opacity: 0.5;
+    animation: fadeIn 1.5s ease-out forwards;
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
+
+.header {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+}
+
+.header h1 {
+    font-size: 43px;
+    font-weight: 900;
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(45deg, 
+                white 0%, white 71%, 
+                #00eaff 50%, #00ccff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 10px;
+    position: relative;
+
+    /* REMOVE any visual effects */
+    text-shadow: none;
+    filter: none;
+    backdrop-filter: none;
+}
+
+.container {
+    max-width: 1600px; /* increased from 1200px */
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.form-container {
+    margin: 20px 0;
+    text-align: center;
+    background: rgba(20, 10, 40, 0.3);
+    backdrop-filter: blur(8px);
+    border: 1px solid #8a2be2;
+    border-radius: 30px; /* increased rounding */
+    padding: 30px;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.form-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+    background: rgba(40, 20, 60, 0.4);
+    border-color: #bb6eff;
+}
+
+.form-container p {
+    font-size: 1.2rem;
+    color: #d0d0d5;
+    margin-bottom: 20px;
+}
+
+.form-container form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-container input {
+    padding: 14px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px; /* rounded input */
+    color: #ffffff;
+    width: 350px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.form-container input:focus {
+    outline: none;
+    border-color: #8a2be2;
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+}
+
+/* Existing button updated with elegant style */
+.form-container button {
+    padding: 15px 30px;
+    border: 2px solid #2c2c2c;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 30px; /* rounded button */
+    transition: all 0.4s ease;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    font-weight: bold;
+}
+
+/* Radial glow effect on hover */
+.form-container button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0) 70%
+    );
+    transform: scale(0);
+    transition: transform 0.5s ease;
+}
+
+.form-container button:hover::after {
+    transform: scale(4);
+}
+
+.form-container button:hover {
+    border-color: #666666;
+    background: #292929;
+}
+
+.form-container button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.loader {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top: 4px solid #8a2be2;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.form-container.loading .loader {
+    display: block;
+}
+
+.form-container.loading form {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.error {
+    color: #ff4d4d;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.loader {
+    display: none;
+    position: absolute;
+    top: 70%; /* keeps it slightly down */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid rgba(255, 255, 255, 0.3); /* lighter border */
+    border-top: 3px solid #ffffff; /* white color */
+    border-radius: 50%;
+    width: 30px;   /* smaller size */
+    height: 30px;  /* smaller size */
+    animation: spin 1s linear infinite;
+}
+
+
+
+.stock-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.stock-card {
+    position: relative;
+    background: rgba(15, 5, 30, 0.2);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.1);
+}
+
+.stock-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(138, 43, 226, 0.5);
+}
+
+.stock-card img {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stock-card p:first-child {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.stock-card p:last-child {
+    font-size: 0.9rem;
+    color: #d0d0d5;
+}
+
+
+
+
+
+
+
+
+
+/* Scoped styles for the sidebar */
+.custom-sidebar-container * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.custom-sidebar-container {
+  font-family: 'Inter', sans-serif;
+}
+
+.custom-sidebar-container .sidebar {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 8, 30, 0.95) 0%,
+    rgba(15, 6, 35, 0.95) 30%,
+    rgba(25, 10, 50, 0.95) 70%,
+    rgba(12, 8, 25, 0.95) 100%
+  );
+  width: 230px; /* Slightly increased width */
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: -230px; /* match the new width */
+  z-index: 1000;
+  transition: left 0.3s ease;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.custom-sidebar-container .sidebar.active {
+  left: 0;
+}
+
+.custom-sidebar-container .dot-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.custom-sidebar-container .dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(187, 51, 255, 0.25);
+  border-radius: 50%;
+  animation: moveDot 10s linear infinite;
+  opacity: 0.5;
+}
+
+.custom-sidebar-container .dot:nth-child(2) { animation-duration: 12s; left: 20%; }
+.custom-sidebar-container .dot:nth-child(3) { animation-duration: 8s; left: 40%; }
+.custom-sidebar-container .dot:nth-child(4) { animation-duration: 15s; left: 60%; }
+.custom-sidebar-container .dot:nth-child(5) { animation-duration: 9s; left: 80%; }
+
+@keyframes moveDot {
+  0% { transform: translateY(0) translateX(0); opacity: 0.5; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+.custom-sidebar-container .sidebar-header {
+  padding: 15px;
+  display: flex;
+  align-items: left;
+  justify-content: space-between;
+}
+.custom-sidebar-container .logo {
+  color: #ffffff;
+  font-size: 16px; /* reduced from 18px */
+  font-weight: 700; 
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.custom-sidebar-container .logo:hover {
+  color: #d4aaff;
+  transform: translateY(-1px);
+}
+
+
+.custom-sidebar-container .toggle-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 16px; /* reduced from 18px */
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.custom-sidebar-container .toggle-btn:hover {
+  color: #d4aaff;
+}
+
+.custom-sidebar-container .nav-links {
+  list-style: none;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.custom-sidebar-container .nav-links li {
+  position: relative;
+ 
+}
+.custom-sidebar-container .nav-links a {
+  color: #d0d0d0;
+  text-decoration: none;
+  font-size: 13px; /* keep reduced size */
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  line-height: 1.3;
+  transition: color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+  display: flex;          /* changed from block */
+  align-items: center;    /* vertically center icon & text */
+  gap: 8px;               /* spacing between icon & text */
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.custom-sidebar-container .nav-links a:hover {
+  color: #ffffff;
+  transform: translateX(3px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.custom-sidebar-container .nav-links a i {
+  margin-right: 8px; /* no longer needed */
+  vertical-align: middle;
+}
+
+.custom-sidebar-container .menu-icon {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
+  cursor: pointer;
+  font-size: 20px; /* reduced from 22px */
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.custom-sidebar-container .menu-icon:hover {
+  color: #d4aaff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.navbar {
+    font-family: 'Inter', sans-serif;
+    background: transparent; /* Fully transparent background */
+    padding: 26px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px); /* Retains blur for subtle effect */
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.dot-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(187, 51, 255, 0.3);
+    border-radius: 50%;
+    animation: moveDot 10s linear infinite;
+    opacity: 0.5;
+}
+
+.dot:nth-child(2) { animation-duration: 12s; left: 20%; }
+.dot:nth-child(3) { animation-duration: 8s; left: 40%; }
+.dot:nth-child(4) { animation-duration: 15s; left: 60%; }
+.dot:nth-child(5) { animation-duration: 9s; left: 80%; }
+.dot:nth-child(6) { animation-duration: 15s; left: 60%; }
+.dot:nth-child(7) { animation-duration: 9s; left: 80%; }
+.dot:nth-child(8) { animation-duration: 15s; left: 60%; }
+.dot:nth-child(9) { animation-duration: 9s; left: 80%; }
+
+@keyframes moveDot {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(100px) translateX(50px);
+        opacity: 0;
+    }
+}
+
+.nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center; /* Centers all items horizontally */
+    align-items: center;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    margin-right: 32px; /* Adds spacing between logo and nav-links */
+}
+
+.logo:hover {
+    color: #d4aaff;
+    transform: translateY(-1px);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #d4aaff;
+    transform: translateY(-1px);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(to right, #bb33ff, #8a2be2);
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -6px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 1px;
+}
+
+.nav-links a:hover::after {
+    width: 90%;
+}
+#bg-molecule {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -2;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+}
+
+
+    </style>
+</head>
+<body>
+  
+  
+  <canvas id="bg-molecule"></canvas>
+
+    <nav class="navbar">
+    <div class="dot-animation">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="nav-container">
+      
+      <ul class="nav-links">
+    <li> <a href="{{ url_for('app1.home') }}">Home</a></li>
+       <li> <a href="{{ url_for('app3.index') }}">predict stock</a></li>
+      <li>  <a href="{{ url_for('app4.page') }}">Sentimental Analysis </a></li>
+        <li><a href="{{ url_for('app5.page') }}">Historical Data</a></li>
+       <li> <a href="{{ url_for('app6.page') }}">Fetch Info.data</a></li>
+        <li><a href="{{ url_for('app7.page') }}">Current News</a></li>
+    
+        <li><a href="{{ url_for('app2.logout') }}">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+
+
+  <div class="custom-sidebar-container">
+    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+    <nav class="sidebar" id="sidebar">
+      <div class="dot-animation">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    
+      </div>
+      <div class="sidebar-header">
+        <a href="#" class="logo"><span></span></a>
+        <button class="toggle-btn" onclick="toggleSidebar()">❏</button>
+      </div>
+<ul class="nav-links">
+  <li><a href="{{ url_for('app3.index') }}"><span class="material-icons">show_chart</span> Predict Stock Price</a></li>
+  <li><a href="{{ url_for('app4.page') }}"><span class="material-icons">insights</span> Sentimental Analysis</a></li>
+  <li><a href="{{ url_for('app5.page') }}"><span class="material-icons">history_edu</span> Historical Data</a></li>
+  <li><a href="{{ url_for('app6.page') }}"><span class="material-icons">apartment</span> Company Info Data</a></li>
+  <li><a href="{{ url_for('app7.page') }}"><span class="material-icons">campaign</span> Current News</a></li>
+  <li><a href="{{ url_for('app2.logout') }}"><span class="material-icons">logout</span> Logout Option</a></li>
+</ul>
+
+
+    </nav>
+  </div>
+  
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+  </script>
+  
+    <div class="header">
+        <h1>Stock Analysis Dashboard</h1>
+    </div>
+    
+    
+  
+    <div class="container">
+        <div class="form-container" id="formContainer">
+            <p>Enter a stock ticker to view detailed analysis, including price trends, volume, RSI, MACD, and more.</p>
+            <form method="POST" action="{{ url_for('app3.index') }}" id="stockForm">
+                <input type="text" name="ticker" id="tickerInput" placeholder="Enter Stock Ticker (e.g., AAPL)" required>
+                <button type="submit">Analyze</button>
+            </form>
+            <div class="loader"></div>
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+        </div>
+        
+        
+        <script>
+const form = document.getElementById('stockForm');
+const formContainer = document.getElementById('formContainer');
+
+form.addEventListener('submit', function(e) {
+    // Show loader
+    formContainer.classList.add('loading');
+    
+    // Optional: disable the button to prevent multiple submits
+    const button = form.querySelector('button');
+    button.disabled = true;
+
+    // Let the form submit normally (POST request)
+});
+</script>
+
+
+
+
+        
+        
+        
+        
+        <div class="stock-grid">
+            <div class="stock-card" onclick="selectStock('AAPL')">
+                <img src="https://logo.clearbit.com/apple.com" alt="Apple Logo">
+                <p>AAPL</p>
+                <p>Apple Inc.</p>
+            </div>
+            <div class="stock-card" onclick="selectStock('MSFT')">
+                <img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft Logo">
+                <p>MSFT</p>
+                <p>Microsoft Corporation</p>
+            </div>
+            <div class="stock-card" onclick="selectStock('GOOGL')">
+                <img src="https://logo.clearbit.com/google.com" alt="Google Logo">
+                <p>GOOGL</p>
+                <p>Alphabet Inc.</p>
+            </div>
+            <div class="stock-card" onclick="selectStock('AMZN')">
+                <img src="https://logo.clearbit.com/amazon.com" alt="Amazon Logo">
+                <p>AMZN</p>
+                <p>Amazon.com, Inc.</p>
+            </div>
+            <div class="stock-card" onclick="selectStock('TSLA')">
+                <img src="https://logo.clearbit.com/tesla.com" alt="Tesla Logo">
+                <p>TSLA</p>
+                <p>Tesla, Inc.</p>
+            </div>
+            <div class="stock-card" onclick="selectStock('NVDA')">
+                <img src="https://logo.clearbit.com/nvidia.com" alt="Nvidia Logo">
+                <p>NVDA</p>
+                <p>NVIDIA Corporation</p>
+            </div>
+            <div class="stock-card" onclick="selectStock('META')">
+                <img src="https://logo.clearbit.com/meta.com" alt="Meta Logo">
+                <p>META</p>
+                <p>Meta Platforms, Inc.</p>
+            </div>
+            <div class="stock-card" onclick="selectStock('NFLX')">
+                <img src="https://logo.clearbit.com/netflix.com" alt="Netflix Logo">
+                <p>NFLX</p>
+                <p>Netflix, Inc.</p>
+            </div>
+            <div class="stock-card" onclick="selectStock('INTC')">
+                <img src="https://logo.clearbit.com/intel.com" alt="Intel Logo">
+                <p>INTC</p>
+                <p>Intel Corporation</p>
+            </div>
+            <div class="stock-card" onclick="selectStock('IBM')">
+                <img src="https://logo.clearbit.com/ibm.com" alt="IBM Logo">
+                <p>IBM</p>
+                <p>International Business Machines Corporation</p>
+            </div>
+            
+            
+            
+            
+            
+        </div>
+        
+        
+        
+        <div class="nav-links"  style="margin-top:40px;">
+            <a href="{{ url_for('app1.home') }}">Back to Home</a>
+            <span>|</span>
+            <a href="{{ url_for('app2.logout') }}">Logout</a>
+        </div>
+    </div>
+    
+    
+    
+    
+    <script>
+        function selectStock(ticker) {
+            document.getElementById('tickerInput').value = ticker;
+            document.getElementById('stockForm').submit();
+        }
+
+        document.getElementById('stockForm').addEventListener('submit', function() {
+            const formContainer = document.getElementById('formContainer');
+            const button = this.querySelector('button');
+            formContainer.classList.add('loading');
+            button.disabled = true;
+        });
+    </script>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+<script>
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-molecule'), alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+
+// Create glowing atoms with color gradient
+const atoms = [];
+const colors = [0x00ffff, 0x8a2be2, 0xffffff, 0x4b0082];
+
+for (let i=0; i<30; i++) {
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const atomMaterial = new THREE.MeshStandardMaterial({
+        color: color,
+        emissive: color,
+        emissiveIntensity: 0.6,
+        metalness: 0.3,
+        roughness: 0.2
+    });
+    const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.2, 24, 24), atomMaterial);
+    sphere.position.set(
+        (Math.random()-0.5)*6,
+        (Math.random()-0.5)*6,
+        (Math.random()-0.5)*6
+    );
+    atoms.push(sphere);
+    scene.add(sphere);
+}
+
+// Add glowing bonds with gradient lines
+const lines = [];
+atoms.forEach((a, i) => {
+    for (let j=i+1; j<atoms.length; j++) {
+        const dist = a.position.distanceTo(atoms[j].position);
+        if (dist < 2) {
+            const points = [a.position.clone(), atoms[j].position.clone()];
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const materialLine = new THREE.LineBasicMaterial({
+                color: 0x8a2be2,
+                transparent: true,
+                opacity: 0.3
+            });
+            const line = new THREE.Line(geometry, materialLine);
+            lines.push(line);
+            scene.add(line);
+        }
+    }
+});
+
+// Lighting for modern glow effect
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+const pointLight1 = new THREE.PointLight(0x00ffff, 1, 50);
+const pointLight2 = new THREE.PointLight(0x8a2be2, 1, 50);
+pointLight1.position.set(5,5,5);
+pointLight2.position.set(-5,-5,-5);
+scene.add(ambientLight, pointLight1, pointLight2);
+
+// Optional: add floating particle background
+const particleGeometry = new THREE.BufferGeometry();
+const particleCount = 200;
+const particlePositions = [];
+for (let i=0; i<particleCount; i++) {
+    particlePositions.push((Math.random()-0.5)*20);
+    particlePositions.push((Math.random()-0.5)*20);
+    particlePositions.push((Math.random()-0.5)*20);
+}
+particleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(particlePositions, 3));
+const particleMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05, transparent: true, opacity: 0.6 });
+const particles = new THREE.Points(particleGeometry, particleMaterial);
+scene.add(particles);
+
+// Camera position
+camera.position.z = 6;
+
+// Animation loop
+function animate() {
+    requestAnimationFrame(animate);
+
+    // Rotate atoms
+    atoms.forEach(atom => {
+        atom.rotation.y += 0.02;
+        atom.rotation.x += 0.01;
+    });
+
+    // Rotate entire scene slowly
+    scene.rotation.y += 0.002;
+
+    // Optional: floating particle rotation
+    particles.rotation.y += 0.0005;
+
+    renderer.render(scene, camera);
+}
+animate();
+
+// Handle resize
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+
+
+</body>
+</html>

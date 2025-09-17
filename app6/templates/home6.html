@@ -1,0 +1,805 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <title>APEXORA</title>
+    <link rel="icon" href="https://tse1.mm.bing.net/th/id/OIP.55_1bcw1pR_H21Lgc2qpAwAAAA?rs=1&pid=ImgDetMain" type="image/png">
+
+    <style>
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #f0f0f5;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
+    animation: fadeIn 1s ease-out forwards;
+
+    background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(135deg, rgb(2, 0, 10), rgb(0, 0, 5), rgb(0, 0, 0));
+    
+    background-size: 60px 60px, 60px 60px, cover;
+    background-blend-mode: overlay;
+}
+
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 20%, rgba(50, 0, 100, 0.6), transparent 70%);
+    z-index: -1;
+    opacity: 0.5;
+    animation: fadeIn 1.2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Dashboard Layout Styles */
+.dashboard-container {
+    margin-top: 120px;
+    display: flex;
+    width: 95%;
+    max-width: 1800px;
+    gap: 30px;
+    min-height: calc(100vh - 160px);
+    animation: fadeIn 1s ease-out 0.2s forwards;
+    opacity: 0;
+}
+
+.left-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 120px;
+    height: fit-content;
+}
+
+.input-container {
+    padding: 25px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.3s ease;
+    animation: fadeIn 1s ease-out 0.4s forwards;
+    opacity: 0;
+    width: 100%;
+}
+
+.input-container:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(138, 43, 226, 0.3);
+    border: 1px solid rgba(138, 43, 226, 0.5);
+}
+
+.input-container h1 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 30px;
+    font-weight: 900;
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(45deg, 
+                white 0%, white 71%, 
+                #00eaff 50%, #00ccff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    text-shadow: none;
+}
+
+.input-container p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #ddd;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 36px;
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+}
+
+.search-container input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 15px;
+}
+
+.search-container input[type="text"]:hover {
+    border-color: #8a2be2;
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
+}
+
+.search-container input[type="text"]:focus {
+    outline: none;
+    border-color: #8a2be2;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+}
+
+.search-container button {
+    padding: 12px;
+    background: linear-gradient(90deg, #8a2be2, #1e90ff);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.search-container button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.search-container button:hover::before {
+    left: 100%;
+}
+
+.search-container button:hover {
+    background: linear-gradient(90deg, #6a0dad, #104e8b);
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+}
+
+.error-message {
+    background: rgba(255, 0, 0, 0.2);
+    border: 1px solid rgba(255, 0, 0, 0.5);
+    color: #ff6666;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    animation: fadeIn 1s ease-out forwards;
+    margin-bottom: 20px;
+}
+
+.details-container {
+    width: 100%;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s ease;
+    animation: fadeIn 1s ease-out 0.5s forwards;
+    opacity: 0;
+}
+
+.details-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(138, 43, 226, 0.3);
+}
+
+.details-container h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    margin-bottom: 20px;
+}
+
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.1rem;
+    color: #e0e0f5;
+}
+
+.details-table th,
+.details-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.details-table th {
+    font-weight: 600;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+.details-table td {
+    color: #e0e0f5;
+    white-space: pre-wrap;
+}
+
+.details-table tr:hover {
+    background: rgba(138, 43, 226, 0.1);
+    transition: background 0.3s ease;
+}
+
+.download-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.download-section a {
+    padding: 12px 24px;
+    background: linear-gradient(90deg, #28a745, #1e90ff);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.download-section a:hover {
+    background: linear-gradient(90deg, #218838, #104e8b);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(40, 167, 69, 0.5);
+}
+
+.download-section p {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #b0b0d5;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .dashboard-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .left-section,
+    .right-section {
+        flex: 1;
+    }
+    
+    .right-section {
+        position: static;
+        top: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        width: 95%;
+        margin-top: 100px;
+    }
+
+    .input-container {
+        border-radius: 12px;
+    }
+
+    .input-container h1 {
+        font-size: 1.8rem;
+    }
+
+    .details-table {
+        font-size: 1rem;
+    }
+
+    .details-table th,
+    .details-table td {
+        padding: 8px 10px;
+    }
+}
+
+/* Navbar Styles */
+.navbar {
+    font-family: 'Inter', sans-serif;
+    background: transparent;
+    padding: 26px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.dot-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(187, 51, 255, 0.3);
+    border-radius: 50%;
+    animation: moveDot 10s linear infinite;
+    opacity: 0.5;
+}
+
+.dot:nth-child(2) { animation-duration: 12s; left: 20%; }
+.dot:nth-child(3) { animation-duration: 8s; left: 40%; }
+.dot:nth-child(4) { animation-duration: 15s; left: 60%; }
+.dot:nth-child(5) { animation-duration: 9s; left: 80%; }
+.dot:nth-child(6) { animation-duration: 15s; left: 60%; }
+.dot:nth-child(7) { animation-duration: 9s; left: 80%; }
+.dot:nth-child(8) { animation-duration: 15s; left: 60%; }
+.dot:nth-child(9) { animation-duration: 9s; left: 80%; }
+
+@keyframes moveDot {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(100px) translateX(50px);
+        opacity: 0;
+    }
+}
+
+.nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    margin-right: 32px;
+}
+
+.logo:hover {
+    color: #d4aaff;
+    transform: translateY(-1px);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 10;
+    letter-spacing: 0.2px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #d4aaff;
+    transform: translateY(-1px);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(to right, #bb33ff, #8a2be2);
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -6px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 1px;
+}
+
+.nav-links a:hover::after {
+    width: 90%;
+}
+
+/* Sidebar Styles */
+.custom-sidebar-container * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.custom-sidebar-container {
+    font-family: 'Inter', sans-serif;
+}
+
+.custom-sidebar-container .sidebar {
+    background: linear-gradient(180deg, rgba(20, 15, 50, 0.9) 0%, rgba(30, 10, 60, 0.9) 30%, rgba(50, 20, 80, 0.9) 70%, rgba(25, 15, 55, 0.9) 100%);
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.custom-sidebar-container .sidebar.active {
+    left: 0;
+}
+
+.custom-sidebar-container .sidebar-header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.custom-sidebar-container .logo {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.custom-sidebar-container .logo:hover {
+    color: #d4aaff;
+    transform: translateY(-1px);
+}
+
+.custom-sidebar-container .toggle-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.custom-sidebar-container .toggle-btn:hover {
+    color: #d4aaff;
+}
+
+.custom-sidebar-container .nav-links {
+    list-style: none;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.custom-sidebar-container .nav-links li {
+    position: relative;
+}
+
+.custom-sidebar-container .nav-links a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: block;
+    padding: 8px 0;
+}
+
+.custom-sidebar-container .nav-links a:hover {
+    color: #d4aaff;
+    transform: translateX(5px);
+}
+
+.custom-sidebar-container .nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(to right, #bb33ff, #8a2be2);
+    left: 0;
+    bottom: 4px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 1px;
+}
+
+.custom-sidebar-container .nav-links a:hover::after {
+    width: 90%;
+}
+
+.custom-sidebar-container .menu-icon {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    cursor: pointer;
+    font-size: 24px;
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.custom-sidebar-container .menu-icon:hover {
+    color: #d4aaff;
+}
+
+#bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    background: transparent;
+    pointer-events: none;
+}
+    </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+   <nav class="navbar">
+    <div class="dot-animation">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="nav-container">
+      
+      <ul class="nav-links">
+        <li> <a href="{{ url_for('app1.home') }}">Home</a></li>
+        <li> <a href="{{ url_for('app3.index') }}">predict stock</a></li>
+        <li>  <a href="{{ url_for('app4.page') }}">Sentimental Analysis </a></li>
+        <li><a href="{{ url_for('app5.page') }}">Historical Data</a></li>
+        <li> <a href="{{ url_for('app6.page') }}">Fetch Info.data</a></li>
+        <li><a href="{{ url_for('app7.page') }}">Current News</a></li>
+        <li><a href="{{ url_for('app2.logout') }}">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="custom-sidebar-container">
+    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+    <nav class="sidebar" id="sidebar">
+      <div class="dot-animation">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="sidebar-header">
+        <a href="#" class="logo"><span></span></a>
+        <button class="toggle-btn" onclick="toggleSidebar()">✕</button>
+      </div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('app3.index') }}"><i class="fas fa-chart-line"> </i>  Predict Stock Price</a></li>
+        <li><a href="{{ url_for('app4.page') }}"><i class="fas fa-newspaper"> </i>  Sentimental Analysis</a></li>
+        <li><a href="{{ url_for('app5.page') }}"><i class="fas fa-history"> </i>  Historical Data</a></li>
+        <li><a href="{{ url_for('app6.page') }}"><i class="fas fa-building"> </i>  Company Info Data</a></li>
+        <li><a href="{{ url_for('app7.page') }}"><i class="fas fa-bullhorn"> </i>  Current News & Affairs</a></li>
+        <li><a href="{{ url_for('app2.logout') }}"><i class="fas fa-sign-out-alt"> </i>   Logout Option</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Dashboard Layout -->
+  <div class="dashboard-container">
+    <!-- Left Section - Output/Results -->
+    <div class="left-section">
+      {% if error %} 
+        <div class="error-message">
+          <span>{{ error }}</span>
+        </div>
+      {% endif %}
+
+      {% if data %}
+        <div class="details-container">
+          <h2>{{ data['Company Name'] }} ({{ data['Ticker'] }})</h2>
+          <table class="details-table">
+            <thead>
+              <tr>
+                <th>Key</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for key, value in data.items() %}
+                <tr>
+                  <td>{{ key }}</td>
+                  <td>{{ value }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% if filename %}
+            <div class="download-section">
+              <a href="{{ url_for('app6.download_file', filename=filename.split('/')[-1]) }}">
+                Download JSON Data
+              </a>
+              <p>Data saved as: {{ filename.split('/')[-1] }}</p>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Right Section - Input -->
+    <div class="right-section">
+      <div class="input-container">
+        <h1>Stock Market Data</h1>
+        <p>Enter a stock ticker to retrieve comprehensive company informational data like caseflow, debt, etc.</p>
+        <form method="POST" class="search-container">
+          <input type="text" name="ticker" placeholder="Enter ticker " required>
+          <button type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+  </script>
+    
+  <script>
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    const particleCount = 150;
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = (Math.random() - 0.5) * 0.8;
+            this.vy = (Math.random() - 0.5) * 0.8;
+            this.radius = 1.5;
+        }
+
+        move() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.fill();
+        }
+    }
+
+    function connectParticles() {
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = dx * dx + dy * dy;
+
+                if (dist < 12000) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist / 12000})`;
+                    ctx.lineWidth = 0.3;
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let p of particles) {
+            p.move();
+            p.draw();
+        }
+        connectParticles();
+        requestAnimationFrame(animate);
+    }
+
+    function initParticles() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        initParticles();
+    });
+
+    initParticles();
+    animate();
+  </script>
+
+</body>
+</html>

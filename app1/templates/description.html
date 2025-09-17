@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Apexora — Documentation </title>
+  <style>
+    :root {
+      --bg: #070a0e; /* Darker background */
+      --card: #0a1018; /* Darker card background */
+      --muted: #8a98ae; /* Slightly muted for contrast */
+      --accent: #7c3aed;
+      --accent-2: #06b6d4;
+      --success: #16a34a;
+      --danger: #ef4444;
+      --glass: rgba(255,255,255,0.02); /* Darker glass effect */
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; background: var(--bg); color: #e6eef6; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; line-height: 1.6; margin: 0; }
+    
+    /* Layout */
+    .app { display: grid; grid-template-columns: 280px 1fr; gap: 24px; padding: 28px; min-height: 100vh; }
+    .sidebar { 
+      background: linear-gradient(180deg, var(--card), #070d15); /* Darker gradient */
+      border-radius: 12px; 
+      padding: 18px; 
+      border: 1px solid rgba(255,255,255,0.02); /* Darker border */
+      position: sticky; 
+      top: 28px; 
+      max-height: calc(100vh - 56px); 
+      overflow-y: auto; 
+    }
+    .brand { display: flex; gap: 12px; align-items: center; margin-bottom: 18px; }
+    .logo { width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; }
+    .brand h1 { font-size: 16px; margin: 0; }
+    .muted { color: var(--muted); font-size: 13px; }
+    nav { margin-top: 8px; }
+    nav a { display: block; padding: 10px; border-radius: 8px; color: var(--muted); text-decoration: none; margin-bottom: 6px; }
+    nav a:hover { background: var(--glass); color: #e6eef6; }
+    nav a.active { background: linear-gradient(90deg, rgba(124,58,237,0.12), rgba(6,182,212,0.05)); color: var(--accent); }
+
+    .main { padding: 18px; border-radius: 12px; background: linear-gradient(180deg, rgba(255,255,255,0.008), rgba(255,255,255,0.005)); /* Subtler gradient */ border: 1px solid rgba(255,255,255,0.015); }
+    header.doc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    header h2 { margin: 0; font-size: 20px; }
+    .tag { background: rgba(255,255,255,0.02); padding: 6px 10px; border-radius: 999px; font-size: 13px; color: var(--muted); }
+
+    section.card { background: var(--card); margin-bottom: 18px; padding: 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.015); }
+    section.card#description { background: #05080f; } /* Even darker for description */
+    section.card#description h3 { font-size: 24px; }
+    section.card#description p { font-size: 16px; }
+    h3 { margin: 0 0 8px 0; }
+    p { color: #cfe6ff; }
+
+    /* Code blocks */
+    pre { background: #05080f; border-radius: 8px; padding: 14px; overflow: auto; font-family: var(--mono); font-size: 13px; color: #dbeafe; border: 1px solid rgba(255,255,255,0.02); }
+    code.inline { background: rgba(255,255,255,0.015); padding: 2px 6px; border-radius: 6px; font-family: var(--mono); font-size: 13px; }
+    .kbd { background: rgba(255,255,255,0.02); padding: 4px 8px; border-radius: 6px; font-family: var(--mono); font-size: 12px; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.02); text-align: left; font-size: 13px; color: #dbeafe; }
+    th { color: var(--muted); font-weight: 600; }
+
+    /* Small helpers */
+    .muted-block { color: var(--muted); font-size: 13px; }
+    .row { display: flex; gap: 12px; align-items: center; }
+    .pill { padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.015); font-size: 13px; }
+
+    @media (max-width: 900px) { 
+      .app { grid-template-columns: 1fr; padding: 12px; } 
+      .sidebar { 
+        order: 2; 
+        position: static; 
+        max-height: none; 
+        overflow-y: visible; 
+      } 
+    }
+
+    /* Copy button */
+    .copy-btn { background: transparent; border: 1px solid rgba(255,255,255,0.03); color: var(--muted); padding: 6px 8px; border-radius: 6px; cursor: pointer; font-family: var(--mono); font-size: 12px; }
+    .copy-btn:hover { color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1>Apexora</h1>
+          <div class="muted">Advanced Multimodal Stock Analysis & Prediction</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#overview" class="active">Overview</a>
+        <a href="#description">Project Description</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#benefits">Why Apexora</a>
+        <a href="#tech-stack">Technology Stack</a>
+        <a href="#structure">Project Structure</a>
+        <a href="#setup">Setup & Run</a>
+        <a href="#apps">Apps (app1..app7)</a>
+        <a href="#endpoints">Endpoints & Blueprints</a>
+        <a href="#sentiment">Sentiment Analysis</a>
+        <a href="#model">Prediction Model</a>
+        <a href="#troubleshoot">Troubleshooting</a>
+        <a href="#license">License</a>
+      </nav>
+
+      <div style="margin-top:16px;font-size:12px;color:var(--muted)">
+        <div>Stack: Flask · yfinance · Plotly · PyTorch · NLTK · Transformers · SQLite</div>
+        <div style="margin-top:8px">Theme: Dark — single-file HTML • copy code blocks</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="doc-header">
+        <div>
+          <h2 id="overview">Apexora — Documentation</h2>
+          <div class="muted">Comprehensive developer guide for building and extending Apexora, a multimodal stock analysis platform.</div>
+        </div>
+        <div class="tag">Dark Theme</div>
+      </header>
+
+      <section class="card" id="description">
+        <h3>Project Description</h3>
+        <p>Apexora is a sophisticated platform designed for stock market analysis and prediction, integrating financial data, sentiment analysis, and machine learning to empower investors, traders, and developers. By combining real-time stock metrics, news sentiment, social media insights, and predictive modeling, Apexora provides a comprehensive view of market trends. Its modular Flask-based architecture ensures extensibility, enabling customization for personal or enterprise applications.</p>
+        <p>The platform aggregates data from diverse sources, including yfinance for stock metrics, news APIs for headlines, and Reddit for social sentiment. It employs advanced machine learning models, such as LSTM neural networks for price prediction and transformer-based NLP for sentiment analysis, delivering actionable insights for data-driven investment decisions.</p>
+      </section>
+
+      <section class="card" id="how-it-works">
+        <h3>How Apexora Works</h3>
+        <p>Apexora is built as a modular Flask application with Blueprints handling distinct functionalities. Its workflow includes:</p>
+        <ul>
+          <li><strong>Data Collection:</strong> Fetches real-time stock data (prices, volumes) via yfinance, financials via financialmodelingprep, and news/social media via APIs and scraping.</li>
+          <li><strong>Data Processing:</strong> ETL pipelines (app5) clean and store data in SQLite for efficient querying.</li>
+          <li><strong>Analysis & Visualization:</strong> App3 generates Plotly-based dashboards for metrics like RSI and moving averages. App4 conducts sentiment analysis using VADER and Transformers.</li>
+          <li><strong>Prediction:</strong> A PyTorch LSTM model predicts next-day stock prices using normalized historical data.</li>
+          <li><strong>User Interaction:</strong> Web interfaces (app1, app2) provide forms for ticker input and result visualization, with API endpoints for programmatic access.</li>
+        </ul>
+        <p>This modular design ensures scalability and seamless integration with external systems or trading platforms.</p>
+      </section>
+
+      <section class="card" id="benefits">
+        <h3>Why Apexora is Helpful</h3>
+        <p>Apexora is a versatile tool for investors and developers, offering:</p>
+        <ul>
+          <li><strong>Holistic Insights:</strong> Merges quantitative (stock prices) and qualitative (sentiment) data for comprehensive analysis.</li>
+          <li><strong>Predictive Power:</strong> LSTM-based forecasts provide reliable next-day price predictions.</li>
+          <li><strong>Accessible Interface:</strong> Intuitive dashboards make complex data approachable for all users.</li>
+          <li><strong>Developer-Friendly:</strong> Modular Blueprints and detailed documentation simplify customization.</li>
+          <li><strong>Real-Time Data:</strong> API integrations ensure up-to-date market information.</li>
+          <li><strong>Cost-Effective:</strong> Relies on open-source tools, reducing dependency on proprietary software.</li>
+        </ul>
+        <p>Apexora supports portfolio optimization, trading automation, and market research with advanced analytics.</p>
+      </section>
+
+      <section class="card" id="tech-stack">
+        <h3>Advanced Technology Stack</h3>
+        <p>Apexora’s tech stack is optimized for performance and scalability:</p>
+        <ul>
+          <li><strong>Flask:</strong> Lightweight Python framework for modular web development.</li>
+          <li><strong>yfinance:</strong> Retrieves real-time and historical stock data.</li>
+          <li><strong>Plotly:</strong> Creates interactive visualizations for metrics and sentiment.</li>
+          <li><strong>PyTorch:</strong> Powers the LSTM model for stock price prediction.</li>
+          <li><strong>Transformers (Hugging Face):</strong> Enables NLP for sentiment analysis.</li>
+          <li><strong>NLTK & VADER:</strong> Lightweight sentiment analysis for text data.</li>
+          <li><strong>SQLite:</strong> Efficient database for data storage and querying.</li>
+          <li><strong>Supporting Libraries:</strong> pandas, NumPy, scikit-learn, matplotlib, seaborn, SHAP for data processing and explainability.</li>
+          <li><strong>APIs:</strong> financialmodelingprep, news APIs, and Reddit’s PRAW for data aggregation.</li>
+        </ul>
+        <p>This stack blends web development, data science, and AI for robust financial analysis.</p>
+      </section>
+
+      <section class="card" id="structure">
+        <h3>Project Structure</h3>
+        <p>Apexora’s modular structure uses Flask Blueprints for organized functionality. Updated structure with consistent files for apps 3–7:</p>
+        <pre>flask_app/
+├── app1/
+│   ├── __init__.py
+│   ├── routes.py
+│   └── templates/
+│       └── home.html
+├── app2/
+│   ├── __init__.py
+│   ├── routes.py
+│   ├── models.py
+│   └── templates/
+│       ├── login.html
+│       └── signup.html
+├── app3/
+│   ├── __init__.py
+│   ├── routes.py
+│   └── templates/
+│       └── index.html
+├── app4/
+│   ├── __init__.py
+│   ├── routes.py
+│   └── templates/
+│       └── index.html
+├── app5/
+│   ├── __init__.py
+│   ├── routes.py
+│   ├── etl.py
+│   └── templates/
+│       └── index.html
+├── app6/
+│   ├── __init__.py
+│   ├── routes.py
+│   └── templates/
+│       └── index.html
+├── app7/
+│   ├── __init__.py
+│   ├── routes.py
+│   └── templates/
+│       └── index.html
+├── run.py
+└── README.md
+</pre>
+        <div class="muted-block">Note: Each app (3–7) now includes __init__.py, routes.py, and a templates/index.html for consistency.</div>
+      </section>
+
+      <section class="card" id="setup">
+        <h3>Setup & Run (Local Development)</h3>
+        <p>Steps to set up and run Apexora locally:</p>
+        <ol>
+          <li class="muted-block">Create a virtual environment and install dependencies:</li>
+        </ol>
+        <pre>python -m venv .venv
+source .venv/bin/activate   # mac/linux
+.venv\Scripts\activate      # windows
+pip install -r requirements.txt</pre>
+        <p class="muted-block">Example requirements.txt:</p>
+        <pre>flask
+plotly
+pandas
+numpy
+yfinance
+torch
+transformers
+nltk
+requests
+praw
+scikit-learn
+matplotlib
+seaborn
+shap
+sqlalchemy</pre>
+        <p>Run the app using the main script or Flask’s development server:</p>
+        <pre>python run.py
+# or
+export FLASK_APP=run.py
+export FLASK_ENV=development
+flask run</pre>
+        <div class="muted-block">Note: Set API keys (e.g., NEWS_API_KEY, REDDIT_CLIENT_ID) in environment variables.</div>
+      </section>
+
+      <section class="card" id="apps">
+        <h3>Apps Overview (app1..app7)</h3>
+        <p>Apexora’s functionality is divided into seven Flask Blueprints:</p>
+        <table>
+          <thead><tr><th>App</th><th>Responsibility</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>app1</td><td>Core landing pages</td><td>Serves public pages like the homepage.</td></tr>
+            <tr><td>app2</td><td>Authentication & sessions</td><td>Manages login/signup with SQLite and models.py.</td></tr>
+            <tr><td>app3</td><td>Stock analysis dashboard</td><td>Generates Plotly visualizations for metrics like RSI, moving averages.</td></tr>
+            <tr><td>app4</td><td>Sentiment analysis</td><td>Uses VADER, Transformers, Reddit, and news APIs; saves plots to static folder.</td></tr>
+            <tr><td>app5</td><td>Data fetching (ETL)</td><td>Collects and processes external data into SQLite.</td></tr>
+            <tr><td>app6</td><td>Company financials</td><td>Fetches company data by ticker (e.g., yfinance, financialmodelingprep).</td></tr>
+            <tr><td>app7</td><td>News aggregation</td><td>Stores news headlines for tickers.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card" id="endpoints">
+        <h3>Blueprints & API Endpoints</h3>
+        <p>Apexora uses Flask Blueprints for modular routing. Below is an example of blueprint registration and detailed API endpoints:</p>
+        <pre># run.py
+from flask import Flask
+from app1.routes import bp as app1_bp
+from app2.routes import bp as app2_bp
+from app3.routes import bp as app3_bp
+from app4.routes import bp as app4_bp
+from app5.routes import bp as app5_bp
+from app6.routes import bp as app6_bp
+from app7.routes import bp as app7_bp
+
+app = Flask(__name__)
+app.secret_key = 'dev-secret'  # use env var in production
+
+# Register blueprints
+app.register_blueprint(app1_bp, url_prefix='/')
+app.register_blueprint(app2_bp, url_prefix='/auth')
+app.register_blueprint(app3_bp, url_prefix='/analysis')
+app.register_blueprint(app4_bp, url_prefix='/sentiment')
+app.register_blueprint(app5_bp, url_prefix='/data')
+app.register_blueprint(app6_bp, url_prefix='/company')
+app.register_blueprint(app7_bp, url_prefix='/news')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</pre>
+        <p class="muted-block">Detailed API Endpoints:</p>
+        <ul>
+          <li><strong><code class="inline">GET /</code></strong> — Renders the landing page (app1).</li>
+          <li><strong><code class="inline">GET /auth/login</code></strong> — Displays login form (app2).</li>
+          <li><strong><code class="inline">POST /auth/login</code></strong> — Authenticates user credentials; returns session token.</li>
+          <li><strong><code class="inline">GET /auth/signup</code></strong> — Displays signup form (app2).</li>
+          <li><strong><code class="inline">POST /auth/signup</code></strong> — Registers new user; stores in SQLite.</li>
+          <li><strong><code class="inline">POST /analysis/</code></strong> — Submits ticker for analysis; returns Plotly charts (app3).
+            <pre>POST /analysis/
+Content-Type: application/json
+Body: { "ticker": "AAPL", "start_date": "2023-01-01", "end_date": "2025-01-01" }
+
+Response: {
+  "success": true,
+  "metrics": { "rsi": 65.4, "moving_average": 150.23 },
+  "plot_html": "&lt;div&gt;...&lt;/div&gt;"
+}</pre>
+          </li>
+          <li><strong><code class="inline">POST /sentiment/</code></strong> — Runs sentiment analysis for a ticker; returns scores and plots (app4).
+            <pre>POST /sentiment/
+Content-Type: application/json
+Body: { "ticker": "TSLA", "sources": ["reddit", "news"] }
+
+Response: {
+  "success": true,
+  "sentiment": { "reddit": 0.75, "news": 0.62 },
+  "headlines": ["Tesla Q3 earnings...", "..."],
+  "plot_urls": ["static/sentiment_plot.png"]
+}</pre>
+          </li>
+          <li><strong><code class="inline">POST /data/fetch</code></strong> — Triggers ETL pipeline for external data (app5).
+            <pre>POST /data/fetch
+Content-Type: application/json
+Body: { "ticker": "MSFT", "source": "yfinance" }
+
+Response: {
+  "success": true,
+  "rows_inserted": 250
+}</pre>
+          </li>
+          <li><strong><code class="inline">GET /company/</code></strong> — Fetches company financials by ticker (app6).
+            <pre>GET /company/?ticker=AAPL
+
+Response: {
+  "success": true,
+  "data": { "market_cap": "2.5T", "pe_ratio": 28.4, ... }
+}</pre>
+          </li>
+          <li><strong><code class="inline">GET /news/</code></strong> — Retrieves news headlines for a ticker (app7).
+            <pre>GET /news/?ticker=GOOGL
+
+Response: {
+  "success": true,
+  "headlines": ["Google announces...", "..."]
+}</pre>
+          </li>
+          <li><strong><code class="inline">POST /predict</code></strong> — Runs LSTM prediction for a ticker.
+            <pre>POST /predict
+Content-Type: application/json
+Body: { "ticker": "AAPL" }
+
+Response: {
+  "success": true,
+  "results": { "data_points": 750, "rmse": "12.45", "next_day_prediction": "$174.32" },
+  "plots": { "predictions": "base64-png-data" }
+}</pre>
+          </li>
+        </ul>
+      </section>
+
+      <section class="card" id="sentiment">
+        <h3>Sentiment Analysis (app4)</h3>
+        <p>The sentiment analysis module in Apexora, encapsulated within app4, is a critical component for understanding market perceptions of specific stocks. This module leverages natural language processing (NLP) to analyze textual data from multiple sources, providing insights into public and media sentiment. By processing news headlines and social media posts, app4 generates sentiment scores that help users gauge market mood, which can influence trading decisions. The module is designed to be both robust and flexible, combining lightweight and advanced NLP techniques to ensure accurate and contextually relevant results.</p>
+        <p>Data is sourced primarily from Reddit via the PRAW library and news APIs such as NewsAPI and financialmodelingprep. Reddit provides real-time social sentiment from user discussions, while news APIs deliver structured headline data. The pipeline begins with data collection, where text is filtered by ticker or keyword to ensure relevance. Preprocessing steps include tokenization, removing stop words, and cleaning text to eliminate noise, such as special characters or irrelevant terms. This cleaned data is then analyzed using two complementary approaches: VADER for lexicon-based scoring and a transformer-based model (e.g., BERT) from Hugging Face for contextual analysis.</p>
+        <p>VADER (Valence Aware Dictionary and sEntiment Reasoner) is a rule-based model optimized for social media text, producing sentiment scores ranging from -1 (highly negative) to +1 (highly positive). It is computationally efficient, making it ideal for rapid analysis of large datasets. The transformer model, on the other hand, captures nuanced emotions by considering the context of entire sentences, which is particularly useful for complex news articles. Scores from both methods are aggregated into a composite sentiment score, weighted by factors such as source reliability (e.g., verified news outlets) and recency of the data. This composite score provides a balanced view of market sentiment.</p>
+        <p>Results are visualized as static plots, such as bar charts or time-series graphs, saved to the app4 static folder. These visualizations, generated using libraries like matplotlib or seaborn, allow users to quickly interpret sentiment trends. The module outputs sentiment scores, key headlines or posts, and plot URLs, accessible via the `/sentiment/` API endpoint. For performance optimization, transformer models are cached locally, and heavy computations can be offloaded to background workers using tools like Celery. Environment variables store sensitive API keys to ensure security.</p>
+        <p>Example implementation (app4/routes.py):</p>
+        <pre>from flask import Blueprint, request, render_template
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from transformers import pipeline
+import praw
+import requests
+
+bp = Blueprint('app4', __name__, template_folder='templates')
+
+@bp.route('/', methods=['GET', 'POST'])
+def page():
+    if request.method == 'POST':
+        ticker = request.form['ticker']
+        # Initialize analyzers
+        vader = SentimentIntensityAnalyzer()
+        transformer = pipeline('sentiment-analysis')
+        reddit = praw.Reddit(client_id='YOUR_CLIENT_ID', ...)
+        # Fetch data
+        news = requests.get(f'https://api.newsapi.org/v2/everything?q={ticker}', headers={'X-Api-Key': 'YOUR_KEY'})
+        reddit_posts = reddit.subreddit('stocks').search(ticker, limit=50)
+        # Process sentiment
+        vader_scores = [vader.polarity_scores(post.title)['compound'] for post in reddit_posts]
+        transformer_scores = [transformer(post.title)[0]['score'] for post in reddit_posts]
+        # Aggregate and save plot
+        avg_score = sum(vader_scores + transformer_scores) / len(vader_scores + transformer_scores)
+        plot_url = save_sentiment_plot(ticker, vader_scores, transformer_scores)
+        return render_template('index.html', ticker=ticker, score=avg_score, plot_url=plot_url)
+    return render_template('index.html')
+</pre>
+        <div class="muted-block">Note: Ensure API keys are stored in environment variables. Cache transformer models for performance.</div>
+      </section>
+
+      <section class="card" id="model">
+        <h3>Stock Prediction Model (LSTM)</h3>
+        <p>Apexora’s stock prediction model utilizes a Long Short-Term Memory (LSTM) neural network, implemented in PyTorch, to forecast next-day stock prices based on historical data. LSTMs are particularly suited for time-series data due to their ability to capture long-term dependencies and patterns, making them ideal for modeling stock price movements, which are influenced by both short-term fluctuations and longer-term trends. The model is designed to provide reliable predictions while being computationally efficient for integration into a web application.</p>
+        <p>The prediction pipeline begins with data preparation, where historical stock prices (e.g., closing prices) are fetched using the yfinance library. These prices are normalized using a mean/standard deviation scaler to ensure numerical stability during training and inference. The data is then structured into overlapping time windows, typically spanning 20–60 days, to create sequences that capture temporal patterns. Each sequence serves as input to the LSTM, with the target being the next day’s closing price. This approach allows the model to learn from historical trends and volatility.</p>
+        <p>The LSTM architecture consists of multiple layers, with memory cells that maintain information over time, followed by a linear regression head to output a single predicted value. The model is trained on historical data, optimizing a loss function such as Mean Squared Error (MSE) to minimize prediction errors. During inference, the model processes recent data for a given ticker, applies the inverse transformation to denormalize the output, and returns the predicted price. The model also generates performance metrics, such as Root Mean Squared Error (RMSE), to quantify prediction accuracy.</p>
+        <p>Results are accessible via the `/predict` API endpoint, which accepts a ticker symbol and returns the predicted next-day price, the number of data points used, the RMSE, and a base64-encoded plot visualizing the prediction against historical data. For scalability, pre-trained models are used for quick inference, with training offloaded to background processes to avoid blocking the main application. The plots, generated using matplotlib or Plotly, provide a visual comparison of predicted and actual prices, aiding user interpretation.</p>
+        <p>Example API usage:</p>
+        <pre>POST /predict
+Content-Type: application/json
+Body: { "ticker": "AAPL" }
+
+Response: {
+  "success": true,
+  "results": { "data_points": 750, "rmse": "12.45", "next_day_prediction": "$174.32" },
+  "plots": { "predictions": "base64-png-data" }
+}</pre>
+        <div class="muted-block">Tip: Use pre-trained models for quick inference; offload training to background workers.</div>
+      </section>
+
+      <section class="card" id="troubleshoot">
+        <h3>Troubleshooting & Tips</h3>
+        <ul>
+          <li><strong>yfinance Issues:</strong> Verify ticker and date ranges; use try/except for error handling.</li>
+          <li><strong>Transformers Slow Downloads:</strong> Cache models with <code class="inline">local_files_only=True</code>.</li>
+          <li><strong>Plotly Integration:</strong> Use <code class="inline">fig.to_html(full_html=False)</code> for embedding.</li>
+          <li><strong>Performance:</strong> Offload heavy tasks to Celery/RQ.</li>
+          <li><strong>Security:</strong> Store API keys in environment variables.</li>
+        </ul>
+      </section>
+
+      <section class="card" id="license">
+        <h3>License & Final Notes</h3>
+        <p>Apexora is licensed under the <span class="pill">MIT License</span>. Secure API keys, add tests, and set up CI/CD before production.</p>
+      </section>
+
+      <footer style="margin-top:12px;color:var(--muted);font-size:13px">Generated: Apexora Documentation • Single-file Dark HTML • Extend as needed</footer>
+    </main>
+  </div>
+
+  <script>
+    // Smooth scroll for nav links
+    document.querySelectorAll('nav a').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('nav a').forEach(x => x.classList.remove('active'));
+        a.classList.add('active');
+        const id = a.getAttribute('href').slice(1);
+        const target = document.getElementById(id);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Add copy buttons to code blocks
+    document.querySelectorAll('pre').forEach(pre => {
+      const btn = document.createElement('button');
+      btn.textContent = 'Copy';
+      btn.className = 'copy-btn';
+      btn.style.float = 'right';
+      btn.style.marginTop = '-34px';
+      btn.style.marginRight = '8px';
+      pre.parentNode.insertBefore(btn, pre);
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(pre.innerText);
+          btn.textContent = 'Copied';
+          setTimeout(() => btn.textContent = 'Copy', 1500);
+        } catch (e) {
+          btn.textContent = 'Fail';
+          setTimeout(() => btn.textContent = 'Copy', 1500);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

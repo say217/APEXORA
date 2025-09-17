@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APEXORA</title>
+    <link rel="icon" href="https://tse1.mm.bing.net/th/id/OIP.55_1bcw1pR_H21Lgc2qpAwAAAA?rs=1&pid=ImgDetMain" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+     <link rel="icon" href="https://tse1.mm.bing.net/th/id/OIP.55_1bcw1pR_H21Lgc2qpAwAAAA?rs=1&pid=ImgDetMain" type="image/png">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', 'Inter', 'Roboto', sans-serif;
+    background-color: #000000; /* solid black background */
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 12px 12px;
+    background-blend-mode: normal;
+    color: #f0f0f5;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 20%, rgba(138, 43, 226, 0.1), transparent 70%);
+    z-index: -1;
+    opacity: 0.3;
+    animation: fadeIn 1.2s ease-out forwards;
+}
+
+/* New radial glow at middle-top */
+body::after {
+    content: '';
+    position: absolute;
+    top: -3%; /* moved more upwards from 10% */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;  /* Glow size */
+    height: 400px; /* Glow size */
+    background: radial-gradient(circle, rgba(138, 43, 226, 0.3), transparent 70%);
+    z-index: -1;
+    opacity: 0.5;
+    animation: fadeIn 1.5s ease-out forwards;
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
+.dot-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    overflow: hidden;
+}
+
+.dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(187, 51, 255, 0.3);
+    border-radius: 50%;
+    animation: moveDot 20s linear infinite;
+    opacity: 0.5;
+}
+
+@keyframes moveDot {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(100px) translateX(25px);
+    }
+    100% {
+        transform: translateY(200px) translateX(50px);
+        opacity: 0;
+    }
+}
+
+.dot:nth-child(1)  { left: 5%;  animation-duration: 18s; }
+.dot:nth-child(2)  { left: 10%; animation-duration: 22s; }
+.dot:nth-child(3)  { left: 15%; animation-duration: 16s; }
+.dot:nth-child(4)  { left: 20%; animation-duration: 25s; }
+.dot:nth-child(5)  { left: 25%; animation-duration: 19s; }
+.dot:nth-child(6)  { left: 30%; animation-duration: 21s; }
+.dot:nth-child(7)  { left: 35%; animation-duration: 23s; }
+.dot:nth-child(8)  { left: 40%; animation-duration: 17s; }
+.dot:nth-child(9)  { left: 45%; animation-duration: 20s; }
+.dot:nth-child(10) { left: 50%; animation-duration: 26s; }
+.dot:nth-child(11) { left: 55%; animation-duration: 18s; }
+.dot:nth-child(12) { left: 60%; animation-duration: 28s; }
+.dot:nth-child(13) { left: 65%; animation-duration: 19s; }
+.dot:nth-child(14) { left: 70%; animation-duration: 30s; }
+.dot:nth-child(15) { left: 75%; animation-duration: 22s; }
+.dot:nth-child(16) { left: 80%; animation-duration: 24s; }
+.dot:nth-child(17) { left: 85%; animation-duration: 27s; }
+.dot:nth-child(18) { left: 90%; animation-duration: 15s; }
+.dot:nth-child(19) { left: 95%; animation-duration: 29s; }
+.dot:nth-child(20) { left: 50%; animation-duration: 20s; }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 95%;
+    max-width: 1800px;
+    margin: 80px auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+}
+
+.header h1 {
+    font-size: 38px;
+    font-weight: 1000;
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(45deg, white 0%, white 71%, #00eaff 50%, #00ccff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.description {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #e0e0e6;
+    margin-top: -70px;
+    max-width: 760px;
+    line-height: 1.5;
+    font-family: 'Inter', sans-serif;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.0);
+    border-radius: 12px;
+    transition: all 0.3s ease-in-out;
+}
+.form-container {
+    margin: -80px auto 20px auto; /* move form upwards */
+    text-align: center;
+    background: rgba(187, 51, 255, 0.01); /* transparent purple */
+    backdrop-filter: blur(12px); /* frosted glass effect */
+    border: 1px solid rgba(187, 51, 255, 0.2);
+    border-radius: 30px;
+    padding: 30px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(187, 51, 255, 0.15);
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.form-container:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(187, 51, 255, 0.3);
+    background: rgba(187, 51, 255, 0.12);
+    border-color: rgba(187, 51, 255, 0.3);
+}
+
+/* Paragraph text */
+.form-container p {
+    font-size: 0.95rem; /* smaller text */
+    color: rgba(255, 255, 255, 0.6); /* faded color */
+    margin-bottom: 20px;
+}
+
+/* Form layout */
+.form-container form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Input box */
+.form-container input[type="text"] {
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(187, 51, 255, 0.2);
+    border-radius: 30px;
+    color: #ffffff;
+    width: 350px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.form-container input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+}
+
+.form-container input:focus {
+    outline: none;
+    border-color: #bb33ff;
+    box-shadow: 0 0 15px rgba(187, 51, 255, 0.5);
+}
+
+/* Button styling */
+.form-container button {
+    padding: 15px 30px;
+    border: none;
+    background: linear-gradient(135deg, #0a0a3f, #1a1a1a); /* deep blue → dark black */
+    color: #ffffff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.4s ease;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    font-weight: bold;
+}
+
+/* Glow effect on hover */
+.form-container button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+    transform: scale(0);
+    transition: transform 0.5s ease;
+}
+
+.form-container button:hover::after {
+    transform: scale(4);
+}
+
+.form-container button:hover {
+    background: linear-gradient(135deg, #1a1a50, #111111);
+}
+
+/* Disabled button */
+.form-container button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Loader */
+.loader {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top: 4px solid #bb33ff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.form-container.loading .loader {
+    display: block;
+}
+
+.form-container.loading form {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+
+
+
+
+
+
+.result-container {
+    width: 100%;
+    max-width: 1400px;
+    background: transparent; /* fully transparent */
+    border: 1px solid rgba(187, 51, 255, 0); /* border removed */
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: none; /* remove shadow */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.text-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    flex: 0 0 55%;
+    background: transparent;
+    box-shadow: none;
+}
+
+.graph-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    flex: 0 0 40%;
+    align-items: center;
+    background: transparent;
+    box-shadow: none;
+}
+
+.graph-column img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: none; /* remove image shadow */
+    transition: transform 0.3s ease;
+    background: transparent;
+    padding: 0;
+}
+
+.error {
+    color: #ff6666;
+    text-align: center;
+    margin: 20px 0;
+    font-size: 1.2rem;
+    background: transparent; /* remove background */
+    padding: 0;
+    border-radius: 0;
+}
+
+.headlines, .reddit-posts {
+    text-align: left;
+    background: transparent; /* remove background */
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.headlines h2, .reddit-posts h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: #ffffff;
+    margin-bottom: 15px;
+    border-bottom: none; /* remove border */
+    padding-bottom: 0;
+}
+
+.headlines ul, .reddit-posts ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.headlines li, .reddit-posts li {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #e0e0e6;
+    background: transparent; /* remove background */
+    padding: 0;
+    border-radius: 0;
+    transition: none;
+}
+
+.headlines li a, .reddit-posts li a {
+    color: #bb33ff;
+    text-decoration: none;
+    margin-left: 10px;
+    font-weight: 500;
+}
+
+.headlines li a:hover, .reddit-posts li a:hover {
+    color: #d4aaff;
+    text-decoration: underline;
+}
+
+.plots {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    background: transparent;
+    box-shadow: none;
+}
+
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2.5rem;
+    }
+
+    .container {
+        flex-direction: column;
+        margin-top: 60px;
+        padding: 15px;
+        width: 95%;
+    }
+
+    .form-container {
+        width: 100%;
+        max-width: none;
+        padding: 20px;
+    }
+
+    .result-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .text-column, .graph-column {
+        flex: 1;
+        width: 100%;
+        align-items: center;
+    }
+
+    .graph-column img {
+        max-width: 100%;
+    }
+
+    .form-container input[type="text"] {
+        width: 100%;
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+
+    .plots {
+        margin-left: 0;
+    }
+}
+
+.navbar {
+    font-family: 'Inter', sans-serif;
+    background: transparent;
+    padding: 26px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    margin-right: 32px;
+}
+
+.logo:hover {
+    color: #d4aaff;
+    transform: translateY(-1px);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #d4aaff;
+    transform: translateY(-1px);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(to right, #bb33ff, #8a2be2);
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -6px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 1px;
+}
+
+.nav-links a:hover::after {
+    width: 90%;
+}
+
+
+
+
+/* Scoped styles for the sidebar */
+.custom-sidebar-container * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.custom-sidebar-container {
+  font-family: 'Inter', sans-serif;
+}
+
+.custom-sidebar-container .sidebar {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 8, 30, 0.95) 0%,
+    rgba(15, 6, 35, 0.95) 30%,
+    rgba(25, 10, 50, 0.95) 70%,
+    rgba(12, 8, 25, 0.95) 100%
+  );
+  width: 230px; /* Slightly increased width */
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: -230px; /* match the new width */
+  z-index: 1000;
+  transition: left 0.3s ease;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.custom-sidebar-container .sidebar.active {
+  left: 0;
+}
+
+.custom-sidebar-container .dot-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.custom-sidebar-container .dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(187, 51, 255, 0.25);
+  border-radius: 50%;
+  animation: moveDot 10s linear infinite;
+  opacity: 0.5;
+}
+
+.custom-sidebar-container .dot:nth-child(2) { animation-duration: 12s; left: 20%; }
+.custom-sidebar-container .dot:nth-child(3) { animation-duration: 8s; left: 40%; }
+.custom-sidebar-container .dot:nth-child(4) { animation-duration: 15s; left: 60%; }
+.custom-sidebar-container .dot:nth-child(5) { animation-duration: 9s; left: 80%; }
+
+@keyframes moveDot {
+  0% { transform: translateY(0) translateX(0); opacity: 0.5; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+.custom-sidebar-container .sidebar-header {
+  padding: 15px;
+  display: flex;
+  align-items: left;
+  justify-content: space-between;
+}
+.custom-sidebar-container .logo {
+  color: #ffffff;
+  font-size: 16px; /* reduced from 18px */
+  font-weight: 700; 
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.custom-sidebar-container .logo:hover {
+  color: #d4aaff;
+  transform: translateY(-1px);
+}
+
+
+.custom-sidebar-container .toggle-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 16px; /* reduced from 18px */
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.custom-sidebar-container .toggle-btn:hover {
+  color: #d4aaff;
+}
+
+.custom-sidebar-container .nav-links {
+  list-style: none;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.custom-sidebar-container .nav-links li {
+  position: relative;
+ 
+}
+.custom-sidebar-container .nav-links a {
+  color: #d0d0d0;
+  text-decoration: none;
+  font-size: 13px; /* keep reduced size */
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  line-height: 1.3;
+  transition: color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+  display: flex;          /* changed from block */
+  align-items: center;    /* vertically center icon & text */
+  gap: 8px;               /* spacing between icon & text */
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.custom-sidebar-container .nav-links a:hover {
+  color: #ffffff;
+  transform: translateX(3px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.custom-sidebar-container .nav-links a i {
+  margin-right: 8px; /* no longer needed */
+  vertical-align: middle;
+}
+
+.custom-sidebar-container .menu-icon {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
+  cursor: pointer;
+  font-size: 20px; /* reduced from 22px */
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.custom-sidebar-container .menu-icon:hover {
+  color: #d4aaff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#molecularCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2;
+}
+
+.img-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    text-align: center;
+}
+
+.img-modal img.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 80vh;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    animation: zoomIn 0.3s ease;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #ffffff;
+    font-size: 40px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    color: cyan;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+    </style>
+</head>
+<body>
+    <canvas id="molecularCanvas"></canvas>
+    <div class="molecule-container"></div>
+    <nav class="navbar">
+        <div class="dot-animation">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="{{ url_for('app1.home') }}">Home</a></li>
+                <li><a href="{{ url_for('app3.index') }}">Predict Stock</a></li>
+                <li><a href="{{ url_for('app4.page') }}">Sentimental Analysis</a></li>
+                <li><a href="{{ url_for('app5.page') }}">Fetch Info.data</a></li>
+                <li><a href="{{ url_for('app6.page') }}">Historical Data</a></li>
+                <li><a href="{{ url_for('app7.page') }}">Current News</a></li>
+              
+                <li><a href="{{ url_for('app2.logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="dot-animation">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+
+
+
+<div class="custom-sidebar-container">
+    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+    <nav class="sidebar" id="sidebar">
+      <div class="dot-animation">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    
+      </div>
+      <div class="sidebar-header">
+        <a href="#" class="logo"><span></span></a>
+        <button class="toggle-btn" onclick="toggleSidebar()">❏</button>
+      </div>
+<ul class="nav-links">
+  <li><a href="{{ url_for('app3.index') }}"><span class="material-icons">show_chart</span> Predict Stock Price</a></li>
+  <li><a href="{{ url_for('app4.page') }}"><span class="material-icons">insights</span> Sentimental Analysis</a></li>
+  <li><a href="{{ url_for('app5.page') }}"><span class="material-icons">history_edu</span> Historical Data</a></li>
+  <li><a href="{{ url_for('app6.page') }}"><span class="material-icons">apartment</span> Company Info Data</a></li>
+  <li><a href="{{ url_for('app7.page') }}"><span class="material-icons">campaign</span> Current News</a></li>
+  <li><a href="{{ url_for('app2.logout') }}"><span class="material-icons">logout</span> Logout Option</a></li>
+</ul>
+
+
+    </nav>
+  </div>
+  
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+  </script>
+  
+  
+  
+  
+  
+    <div class="header">
+        <h1>News Sentiment Analysis</h1>
+    </div>
+    <div class="description">
+        Discover the market's pulse with our News Sentiment Analysis tool. Enter a company name or stock ticker to analyze recent news headlines and Reddit posts, helping you make informed investment decisions.
+    </div>
+    <div class="container">
+     <div class="form-container">
+    <p>Enter a company name or stock ticker to analyze recent news headlines and Reddit posts.</p>
+    <form method="POST">
+        <input type="text" id="ticker" name="ticker" placeholder="Input ticker name here..." required>
+        <button type="submit">Analyze</button>
+    </form>
+</div>
+
+        <div class="result-container">
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+            <div class="text-column">
+                {% if news_headlines %}
+                    <div class="headlines">
+                        <h2>News Headlines:</h2>
+                        <ul>
+                            {% for headline, url in news_headlines %}
+                                <li>
+                                    <strong>{{ headline|truncate(200) }}</strong>
+                                    <a href="{{ url }}" target="_blank" rel="noopener noreferrer">Read more</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                {% if reddit_posts %}
+                    <div class="reddit-posts">
+                        <h2>Reddit Posts:</h2>
+                        <ul>
+                            {% for post, url in reddit_posts %}
+                                <li>
+                                    <strong>{{ post|truncate(200) }}</strong>
+                                    <a href="{{ url }}" target="_blank" rel="noopener noreferrer">View post</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+            {% if plot_urls %}
+                <div class="graph-column plots">
+                    {% if plot_urls.news_plot %}
+                        <img src="{{ plot_urls.news_plot }}" class="zoom" alt="News Sentiment Plot" onclick="zoomImage(this)">
+                    {% endif %}
+                    {% if plot_urls.reddit_plot %}
+                        <img src="{{ plot_urls.reddit_plot }}" alt="Reddit Sentiment Plot" onclick="zoomImage(this)">
+                    {% endif %}
+                    {% if plot_urls.shap_plot %}
+                        <img src="{{ plot_urls.shap_plot }}" alt="SHAP Summary Plot" onclick="zoomImage(this)">
+                    {% endif %}
+                    {% if plot_urls.comparison_plot %}
+                        <img src="{{ plot_urls.comparison_plot }}" alt="Source Comparison Plot" onclick="zoomImage(this)">
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        const canvas = document.getElementById('molecularCanvas');
+        const ctx = canvas.getContext('2d');
+        let dots = [];
+        const dotCount = 90;
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        function createDots() {
+            dots = [];
+            for (let i = 0; i < dotCount; i++) {
+                const side = Math.random() < 0.5 ? 'left' : 'right';
+                const x = side === 'left'
+                    ? Math.random() * (window.innerWidth * 0.25)
+                    : window.innerWidth * 0.75 + Math.random() * (window.innerWidth * 0.25);
+                const y = Math.random() * window.innerHeight;
+                const radius = Math.random() * 2.5 + 0.5;
+                const dx = (Math.random() - 0.5) * 0.7;
+                const dy = (Math.random() - 0.5) * 0.7;
+                dots.push({ x, y, radius, dx, dy });
+            }
+        }
+        function drawDots() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            dots.forEach(dot => {
+                ctx.beginPath();
+                ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+                ctx.fillStyle = "rgba(180, 180, 255, 0.5)";
+                ctx.fill();
+            });
+        }
+        function animateDots() {
+            dots.forEach(dot => {
+                dot.x += dot.dx;
+                dot.y += dot.dy;
+                if (dot.x < 0 || dot.x > canvas.width) dot.dx *= -1;
+                if (dot.y < 0 || dot.y > canvas.height) dot.dy *= -1;
+            });
+            drawDots();
+            requestAnimationFrame(animateDots);
+        }
+        createDots();
+        animateDots();
+    </script>
+    <div id="imgModal" class="img-modal">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="zoomedImg">
+    </div>
+    <script>
+        function zoomImage(img) {
+            const modal = document.getElementById("imgModal");
+            const modalImg = document.getElementById("zoomedImg");
+            modal.style.display = "block";
+            modalImg.src = img.src;
+        }
+        function closeModal() {
+            const modal = document.getElementById("imgModal");
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            const modal = document.getElementById("imgModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

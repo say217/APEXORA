@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Analysis - {{ ticker }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', 'Inter', 'Roboto', sans-serif;
+    height: 100%;
+    background-color: #000000; /* solid black background */
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 12px 12px;
+    background-blend-mode: normal;
+    color: #f0f0f5;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background: rgba(17, 17, 17, 0.85);
+    border-right: 1px solid #2a2a2a;
+    padding: 20px 15px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #333 #111;
+    backdrop-filter: blur(8px);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.sidebar::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 3px;
+}
+
+.sidebar h2 {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+/* Metrics cards */
+.metrics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.metric-card {
+    background: rgba(26, 26, 26, 0.75);
+    padding: 15px;
+    border-radius: 12px;
+    border-left: 3px solid #3b82f6;
+    border: 1px solid #2a2a2a;
+    backdrop-filter: blur(6px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+}
+
+.metric-card h3 {
+    margin: 0 0 5px;
+    font-size: 16px;
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+.metric-card p {
+    margin: 0;
+    font-size: 14px;
+    color: #b0b0b0;
+}
+
+.metric-card p strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 280px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(17, 17, 17, 0.85);
+    border-bottom: 1px solid #2a2a2a;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.header h1 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.header .center {
+    flex: 1;
+    text-align: center;
+}
+
+/* Back button link */
+.back-btn {
+  --border-radius: 15px;
+  --border-width: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em 2em;
+  text-decoration: none;
+  background-color: #212121; /* dark button background */
+  font-family: 'Poppins', 'Inter', 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #ffffff;
+  border-radius: var(--border-radius);
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* Rotating conic-gradient border */
+.back-btn::after {
+  --m-i: linear-gradient(#000, #000);
+  --m-o: content-box, padding-box;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: var(--border-width);
+  border-radius: var(--border-radius);
+  background-image: conic-gradient(
+    #488cfb,
+    #29dbbc,
+    #ddf505,
+    #ff9f0e,
+    #e440bb,
+    #655adc,
+    #488cfb
+  );
+  -webkit-mask-image: var(--m-i), var(--m-i);
+  mask-image: var(--m-i), var(--m-i);
+  -webkit-mask-origin: var(--m-o);
+  mask-origin: var(--m-o);
+  -webkit-mask-clip: var(--m-o);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  filter: hue-rotate(0);
+  animation: rotate-hue linear 500ms infinite;
+  animation-play-state: paused;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+/* Activate rotation on hover */
+.back-btn:hover::after {
+  animation-play-state: running;
+}
+
+/* Hue rotation animation */
+@keyframes rotate-hue {
+  to { filter: hue-rotate(1turn); }
+}
+
+/* Optional active effect */
+.back-btn:active {
+  --border-width: 5px;
+}
+
+
+
+/* Charts */
+.chart-container {
+    width: 95%;
+    margin: 20px auto;
+    background: rgba(17, 17, 17, 0.85);
+    border: 1px solid #2a2a2a;
+    padding: 20px;
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.chart-container h2 {
+    margin-bottom: 15px;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+canvas {
+    width: 100% !important;
+    height: 400px !important;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.2);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+    background: #333333;
+    border-radius: 4px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        z-index: 1000;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .chart-container {
+        width: 98%;
+        margin: 10px auto;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar with Metrics -->
+    <div class="sidebar">
+        <h2>Key Metrics</h2>
+        <div class="metrics-grid">
+            {% for name, data in metrics.items() %}
+            <div class="metric-card">
+                <h3>{{ name }}</h3>
+                <p><strong>{{ data.value }}</strong></p>
+                <p>{{ data.desc }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>Stock Analysis: {{ ticker }}</h1>
+            <div class="center"></div>
+<a href="{{ url_for('app3.index') }}" class="back-btn">Back ➡</a>
+
+        </div>
+
+        <!-- Charts -->
+        <div class="chart-container">
+            <h2>Price & Indicators</h2>
+            <canvas id="priceChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h2>Volume</h2>
+            <canvas id="volumeChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h2>RSI (Relative Strength Index)</h2>
+            <canvas id="rsiChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h2>MACD</h2>
+            <canvas id="macdChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h2>Technical Indicators Distribution</h2>
+            <canvas id="pieChart"></canvas>
+        </div>
+
+    </div>
+
+   <script>
+window.onload = function () {
+    // Parse JSON data from Flask
+    const priceData = JSON.parse('{{ price_plot | safe }}');
+    const volumeData = JSON.parse('{{ volume_plot | safe }}');
+    const rsiData = JSON.parse('{{ rsi_plot | safe }}');
+    const macdData = JSON.parse('{{ macd_plot | safe }}');
+    const pieData = JSON.parse('{{ pie_plot | safe }}');
+
+    // Replace null with NaN for Chart.js compatibility
+    function fixData(arr) {
+        return arr.map(v => v === null ? NaN : v);
+    }
+
+    // Dark-theme base options
+    const baseOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 500,
+            easing: 'easeOutQuart'
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#e0e0e0',
+                    font: { family: 'Inter, sans-serif', size: 12, weight: '500' }
+                }
+            },
+            tooltip: {
+                backgroundColor: 'rgba(40,40,40,0.9)',
+                titleColor: '#f3f3f3',
+                bodyColor: '#ffffff',
+                borderColor: '#3b82f6',
+                borderWidth: 1
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: '#aaaaaa', font: { family: 'Inter, sans-serif', size: 11 } },
+                title: { display: true, text: 'Date', color: '#ffffff', font: { family: 'Inter, sans-serif', size: 12, weight: '500' } },
+                grid: { color: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)' }
+            },
+            y: {
+                ticks: { color: '#aaaaaa', font: { family: 'Inter, sans-serif', size: 11 } },
+                title: { display: true, color: '#ffffff', font: { family: 'Inter, sans-serif', size: 12, weight: '500' } },
+                grid: { color: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)' }
+            }
+        },
+        interaction: { intersect: false, mode: 'index' }
+    };
+
+    // Price Chart
+    new Chart(document.getElementById("priceChart"), {
+        type: 'line',
+        data: {
+            labels: priceData.dates,
+            datasets: [
+                { label: "Close Price", data: fixData(priceData.close), borderColor: "#3b82f6", backgroundColor: "rgba(59,130,246,0.15)", fill: false, pointRadius: 0, borderWidth: 2 },
+                { label: "SMA 50", data: fixData(priceData.sma_50), borderColor: "#eab308", borderDash: [8,4], fill: false, pointRadius: 0, borderWidth: 2 },
+                { label: "SMA 200", data: fixData(priceData.sma_200), borderColor: "#dc2626", borderDash: [8,4], fill: false, pointRadius: 0, borderWidth: 2 },
+                { label: "BB Upper", data: fixData(priceData.bb_upper), borderColor: "#16a34a", fill: false, pointRadius: 0, borderWidth: 2 },
+                { label: "BB Lower", data: fixData(priceData.bb_lower), borderColor: "#dc2626", fill: false, pointRadius: 0, borderWidth: 2 },
+                { label: "VWAP", data: fixData(priceData.vwap), borderColor: "#f97316", fill: false, pointRadius: 0, borderWidth: 2 }
+            ]
+        },
+        options: { ...baseOptions, scales: { ...baseOptions.scales, y: { ...baseOptions.scales.y, title: { ...baseOptions.scales.y.title, text: 'Price (USD)' } } } }
+    });
+
+    // Volume Chart
+    new Chart(document.getElementById("volumeChart"), {
+        type: 'bar',
+        data: {
+            labels: volumeData.dates,
+            datasets: [{ label: "Volume", data: fixData(volumeData.volume), backgroundColor: "rgba(59,130,246,0.4)", borderColor: "#3b82f6", borderWidth: 1.5, borderRadius: 4 }]
+        },
+        options: { ...baseOptions, scales: { ...baseOptions.scales, y: { ...baseOptions.scales.y, title: { ...baseOptions.scales.y.title, text: 'Volume' } } } }
+    });
+
+    // RSI Chart
+    new Chart(document.getElementById("rsiChart"), {
+        type: 'line',
+        data: {
+            labels: rsiData.dates,
+            datasets: [{ label: "RSI", data: fixData(rsiData.rsi), borderColor: "#a855f7", backgroundColor: "rgba(168,85,247,0.2)", fill: true, pointRadius: 0, borderWidth: 2 }]
+        },
+        options: { ...baseOptions, scales: { ...baseOptions.scales, y: { ...baseOptions.scales.y, title: { ...baseOptions.scales.y.title, text: 'RSI' }, min: 0, max: 100 } } }
+    });
+
+    // MACD Chart
+    new Chart(document.getElementById("macdChart"), {
+        type: 'line',
+        data: {
+            labels: macdData.dates,
+            datasets: [
+                { label: "MACD", data: fixData(macdData.macd), borderColor: "#3b82f6", backgroundColor: "rgba(59,130,246,0.1)", fill: false, pointRadius: 0, borderWidth: 2 },
+                { label: "Signal Line", data: fixData(macdData.signal), borderColor: "#f97316", backgroundColor: "rgba(249,115,22,0.15)", fill: false, pointRadius: 0, borderWidth: 2 }
+            ]
+        },
+        options: { ...baseOptions, scales: { ...baseOptions.scales, y: { ...baseOptions.scales.y, title: { ...baseOptions.scales.y.title, text: 'MACD' } } } }
+    });
+
+    // Pie Chart
+    new Chart(document.getElementById("pieChart"), {
+        type: 'pie',
+        data: {
+            labels: pieData.labels,
+            datasets: [{
+                data: pieData.values,
+                backgroundColor: ["#3b82f6","#f97316","#16a34a","#dc2626","#a855f7"],
+                borderColor: ["#3b82f6","#f97316","#16a34a","#dc2626","#a855f7"],
+                borderWidth: 1.5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 500, easing: 'easeOutQuart' },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: { color: '#e0e0e0', font: { family: 'Inter, sans-serif', size: 12, weight: '500' } }
+                },
+                title: { display: true, text: 'Technical Indicators Distribution', color: '#ffffff', font: { family: 'Inter, sans-serif', size: 16, weight: '600' } },
+                tooltip: { backgroundColor: 'rgba(40,40,40,0.9)', titleColor: '#f3f3f3', bodyColor: '#ffffff', borderColor: '#3b82f6', borderWidth: 1 }
+            }
+        }
+    });
+}
+</script>
+
+</body>
+</html>

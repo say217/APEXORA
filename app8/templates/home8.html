@@ -1,0 +1,136 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Price Prediction</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1, h2, h3 {
+            color: #00f7ff;
+        }
+        .form-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 200px;
+            background-color: #333;
+            border: 1px solid #555;
+            color: #fff;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #00f7ff;
+            border: none;
+            color: #1a1a1a;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00ccff;
+        }
+        .output {
+            background-color: #222;
+            padding: 15px;
+            border: 1px solid #555;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .metrics, .images {
+            margin-bottom: 20px;
+        }
+        .images img {
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+            border: 1px solid #555;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+
+      <li> <a href="{{ url_for('app1.home') }}">Home</a></li>
+        <li> <a href="{{ url_for('app3.index') }}">predict stock</a></li>
+        <li>  <a href="{{ url_for('app4.page') }}">Sentimental Analysis </a></li>
+        <li><a href="{{ url_for('app5.page') }}">Historical Data</a></li>
+        <li> <a href="{{ url_for('app6.page') }}">Fetch Info.data</a></li>
+        <li><a href="{{ url_for('app7.page') }}">Current News</a></li>
+          <li><a href="{{ url_for('app8.page') }}">Model</a></li>
+        <li><a href="{{ url_for('app2.logout') }}">Logout</a></li>
+        <h1>Stock Price Prediction System</h1>
+        
+        <!-- Input Form -->
+        <div class="form-container">
+            <form method="POST" action="{{ url_for('app8.page') }}">
+                <input type="text" name="ticker" placeholder="Enter ticker (e.g., AAPL)" value="{{ ticker }}">
+                <button type="submit">Run Prediction</button>
+            </form>
+        </div>
+
+        <!-- Console Output -->
+        {% if output %}
+        <div class="output">
+            <h2>Console Output</h2>
+            {{ output | safe }}
+        </div>
+        {% endif %}
+
+        <!-- Model Performance Metrics -->
+        {% if metrics %}
+        <div class="metrics">
+            <h2>{{ ticker }} Model Performance</h2>
+            <p><strong>RMSE:</strong> ${{ '%.2f' | format(metrics.rmse) }}</p>
+            <p><strong>MAE:</strong> ${{ '%.2f' | format(metrics.mae) }}</p>
+            <p><strong>R² Score:</strong> {{ '%.4f' | format(metrics.r2) }}</p>
+            <p><strong>Directional Accuracy:</strong> {{ '%.2f' | format(metrics.directional_acc) }}%</p>
+            {% if metrics.forecast_data %}
+            <h3>{{ ticker }} - {{ metrics.forecast_data|length }}-Day Forecast</h3>
+            <ul>
+                {% for item in metrics.forecast_data %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Plots -->
+        {% if images %}
+        <div class="images">
+            <h2>Visualizations</h2>
+            {% for image in images %}
+            <img src="{{ url_for('static', filename=image) }}" alt="Plot">
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Stock Price Prediction System</p>
+    </footer>
+</body>
+</html>

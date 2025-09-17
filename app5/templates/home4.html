@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+ <link rel="icon" href="https://tse1.mm.bing.net/th/id/OIP.55_1bcw1pR_H21Lgc2qpAwAAAA?rs=1&pid=ImgDetMain" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+     <link rel="icon" href="https://tse1.mm.bing.net/th/id/OIP.55_1bcw1pR_H21Lgc2qpAwAAAA?rs=1&pid=ImgDetMain" type="image/png">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>APEXORA</title>
+  
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', 'Inter', 'Roboto', sans-serif;
+    background-color: #000000; /* solid black background */
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 12px 12px;
+    background-blend-mode: normal;
+    color: #f0f0f5;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 20%, rgba(138, 43, 226, 0.1), transparent 70%);
+    z-index: -1;
+    opacity: 0.3;
+    animation: fadeIn 1.2s ease-out forwards;
+}
+
+/* New radial glow at middle-top */
+body::after {
+    content: '';
+    position: absolute;
+    top: -3%; /* moved more upwards from 10% */
+    left: 34%;
+    transform: translateX(-50%);
+    width: 400px;  /* Glow size */
+    height: 400px; /* Glow size */
+    background: radial-gradient(circle, rgba(138, 43, 226, 0.3), transparent 70%);
+    z-index: -1;
+    opacity: 0.5;
+    animation: fadeIn 1.5s ease-out forwards;
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+        .container {
+            margin-top: 80px;
+            display: flex;
+            flex-direction: column;
+            width: 90%;
+            max-width: 1400px;
+            margin-bottom: 30px;
+            gap: 20px;
+            animation: fadeIn 1s ease-out 0.2s forwards;
+            opacity: 0;
+        }
+
+        .input-container {
+            padding: 25px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.3s ease;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            margin-top:90px;
+            animation: fadeIn 1s ease-out 0.4s forwards;
+            opacity: 0;
+        }
+
+        .input-container:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(138, 43, 226, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.5);
+        }
+
+     .input-container h1 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 25px;
+    font-weight: 900;
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(45deg, 
+                white 0%, white 50%, 
+                #00eaff 50%, #00ccff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    text-shadow: none; /* optional: disable if using gradient */
+}
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #e0e0f5;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 10px;
+            font-size: 1rem;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #8a2be2;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #8a2be2;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        }
+/* Container for button + loader */
+.button-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* space between loader and button */
+    justify-content: flex-start; /* aligns to left side; change to center if needed */
+}
+
+/* Button styling */
+.form-group button {
+    padding: 12px 30px; /* increased padding for bigger size */
+    background: linear-gradient(135deg, #8a2be2, #1e90ff);
+    color: #ffffff;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 1.25rem; /* larger font */
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease-in-out;
+    min-width: 250px; /* increased width */
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3), inset 0 0 8px rgba(30, 144, 255, 0.2);
+    display: inline-block;
+}
+
+/* Shine effect */
+.form-group button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transform: skewX(-25deg);
+    transition: left 0.75s ease;
+}
+
+.form-group button:hover::before {
+    left: 130%;
+}
+
+/* Hover effect */
+.form-group button:hover {
+    background: linear-gradient(135deg, #6a0dad, #104e8b);
+    transform: scale(1.06);
+    box-shadow: 0 0 24px rgba(106, 13, 173, 0.6), 0 0 60px rgba(30, 144, 255, 0.2);
+}
+
+/* Pressed effect */
+.form-group button:active {
+    transform: scale(0.98);
+    box-shadow: 0 0 12px rgba(106, 13, 173, 0.4);
+}
+
+/* Loader styling */
+.loader {
+    display: none; /* hidden by default */
+    width: 22px;  /* slightly bigger for bigger button */
+    height: 22px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid #ffffff; /* spinning color */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Show loader when container has .loading */
+.button-container.loading .loader {
+    display: block;
+}
+
+/* Dim button while loading */
+.button-container.loading button {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Spinner animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+/* Spinner animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+        .error-message {
+            margin-top: 20px;
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid rgba(255, 0, 0, 0.5);
+            color: #ff6666;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .error-message ul {
+            list-style: disc;
+            padding-left: 20px;
+            text-align: left;
+        }
+
+        .results-container {
+            width: 90%;
+            max-width: 1400px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+            margin-left:70px;
+            transition: transform 0.4s ease;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+            opacity: 0;
+        }
+
+        .results-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .results-container h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .results-container p {
+            font-size: 1rem;
+            color: #b0b0d5;
+            margin-bottom: 15px;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1rem;
+            color: #e0e0f5;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .results-table th {
+            font-weight: 600;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .results-table td {
+            color: #e0e0f5;
+            white-space: nowrap;
+        }
+
+        .results-table tr:hover {
+            background: rgba(138, 43, 226, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .download-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .download-section a {
+            padding: 12px 24px;
+            background: linear-gradient(90deg, #28a745, #1e90ff);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .download-section a:hover {
+            background: linear-gradient(90deg, #218838, #104e8b);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.5);
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+
+            .input-container {
+                width: 100%;
+                margin: 0;
+                border-radius: 12px;
+            }
+
+            .form-group button {
+                width: 100%;
+            }
+
+            .input-container h1 {
+                font-size: 1.8rem;
+            }
+
+            .results-table {
+                font-size: 0.9rem;
+            }
+
+            .results-table th,
+            .results-table td {
+                padding: 8px 10px;
+            }
+
+            .results-container {
+                overflow-x: auto;
+            }
+        }
+        
+        
+        
+        
+        
+        
+
+.navbar {
+    font-family: 'Inter', sans-serif;
+    background: transparent; /* Fully transparent background */
+    padding: 26px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px); /* Retains blur for subtle effect */
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.dot-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(187, 51, 255, 0.3);
+    border-radius: 50%;
+    animation: moveDot 10s linear infinite;
+    opacity: 0.5;
+}
+
+.dot:nth-child(2) { animation-duration: 12s; left: 20%; }
+.dot:nth-child(3) { animation-duration: 8s; left: 40%; }
+.dot:nth-child(4) { animation-duration: 15s; left: 60%; }
+.dot:nth-child(5) { animation-duration: 9s; left: 80%; }
+.dot:nth-child(6) { animation-duration: 15s; left: 60%; }
+.dot:nth-child(7) { animation-duration: 9s; left: 80%; }
+.dot:nth-child(8) { animation-duration: 15s; left: 60%; }
+.dot:nth-child(9) { animation-duration: 9s; left: 80%; }
+
+@keyframes moveDot {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(100px) translateX(50px);
+        opacity: 0;
+    }
+}
+
+.nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center; /* Centers all items horizontally */
+    align-items: center;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    margin-right: 32px; /* Adds spacing between logo and nav-links */
+}
+
+.logo:hover {
+    color: #d4aaff;
+    transform: translateY(-1px);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #d4aaff;
+    transform: translateY(-1px);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(to right, #bb33ff, #8a2be2);
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -6px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 1px;
+}
+
+.nav-links a:hover::after {
+    width: 90%;
+}
+
+
+
+
+
+/* Scoped styles for the sidebar */
+.custom-sidebar-container * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.custom-sidebar-container {
+  font-family: 'Inter', sans-serif;
+}
+
+.custom-sidebar-container .sidebar {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 8, 30, 0.95) 0%,
+    rgba(15, 6, 35, 0.95) 30%,
+    rgba(25, 10, 50, 0.95) 70%,
+    rgba(12, 8, 25, 0.95) 100%
+  );
+  width: 230px; /* Slightly increased width */
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: -230px; /* match the new width */
+  z-index: 1000;
+  transition: left 0.3s ease;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.custom-sidebar-container .sidebar.active {
+  left: 0;
+}
+
+.custom-sidebar-container .dot-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.custom-sidebar-container .dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(187, 51, 255, 0.25);
+  border-radius: 50%;
+  animation: moveDot 10s linear infinite;
+  opacity: 0.5;
+}
+
+.custom-sidebar-container .dot:nth-child(2) { animation-duration: 12s; left: 20%; }
+.custom-sidebar-container .dot:nth-child(3) { animation-duration: 8s; left: 40%; }
+.custom-sidebar-container .dot:nth-child(4) { animation-duration: 15s; left: 60%; }
+.custom-sidebar-container .dot:nth-child(5) { animation-duration: 9s; left: 80%; }
+
+@keyframes moveDot {
+  0% { transform: translateY(0) translateX(0); opacity: 0.5; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+.custom-sidebar-container .sidebar-header {
+  padding: 15px;
+  display: flex;
+  align-items: left;
+  justify-content: space-between;
+}
+.custom-sidebar-container .logo {
+  color: #ffffff;
+  font-size: 16px; /* reduced from 18px */
+  font-weight: 700; 
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.custom-sidebar-container .logo:hover {
+  color: #d4aaff;
+  transform: translateY(-1px);
+}
+
+
+.custom-sidebar-container .toggle-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 16px; /* reduced from 18px */
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.custom-sidebar-container .toggle-btn:hover {
+  color: #d4aaff;
+}
+
+.custom-sidebar-container .nav-links {
+  list-style: none;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.custom-sidebar-container .nav-links li {
+  position: relative;
+ 
+}
+.custom-sidebar-container .nav-links a {
+  color: #d0d0d0;
+  text-decoration: none;
+  font-size: 13px; /* keep reduced size */
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  line-height: 1.3;
+  transition: color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+  display: flex;          /* changed from block */
+  align-items: center;    /* vertically center icon & text */
+  gap: 8px;               /* spacing between icon & text */
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.custom-sidebar-container .nav-links a:hover {
+  color: #ffffff;
+  transform: translateX(3px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.custom-sidebar-container .nav-links a i {
+  margin-right: 8px; /* no longer needed */
+  vertical-align: middle;
+}
+
+.custom-sidebar-container .menu-icon {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
+  cursor: pointer;
+  font-size: 20px; /* reduced from 22px */
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.custom-sidebar-container .menu-icon:hover {
+  color: #d4aaff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    background: transparent;
+    pointer-events: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+   <canvas id="bgCanvas"></canvas>
+   <nav class="navbar">
+    <div class="dot-animation">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="nav-container">
+      
+      <ul class="nav-links">
+    <li> <a href="{{ url_for('app1.home') }}">Home</a></li>
+       <li> <a href="{{ url_for('app3.index') }}">predict stock</a></li>
+      <li>  <a href="{{ url_for('app4.page') }}">Sentimental Analysis </a></li>
+        <li><a href="{{ url_for('app5.page') }}">Historical Data</a></li>
+       <li> <a href="{{ url_for('app6.page') }}">Fetch Info.data</a></li>
+        <li><a href="{{ url_for('app7.page') }}">Current News</a></li>
+   
+        <li><a href="{{ url_for('app2.logout') }}">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+
+
+  <div class="custom-sidebar-container">
+    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+    <nav class="sidebar" id="sidebar">
+      <div class="dot-animation">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    
+      </div>
+      <div class="sidebar-header">
+        <a href="#" class="logo"><span></span></a>
+        <button class="toggle-btn" onclick="toggleSidebar()">❏</button>
+      </div>
+<ul class="nav-links">
+  <li><a href="{{ url_for('app3.index') }}"><span class="material-icons">show_chart</span> Predict Stock Price</a></li>
+  <li><a href="{{ url_for('app4.page') }}"><span class="material-icons">insights</span> Sentimental Analysis</a></li>
+  <li><a href="{{ url_for('app5.page') }}"><span class="material-icons">history_edu</span> Historical Data</a></li>
+  <li><a href="{{ url_for('app6.page') }}"><span class="material-icons">apartment</span> Company Info Data</a></li>
+  <li><a href="{{ url_for('app7.page') }}"><span class="material-icons">campaign</span> Current News</a></li>
+  <li><a href="{{ url_for('app2.logout') }}"><span class="material-icons">logout</span> Logout Option</a></li>
+</ul>
+
+
+    </nav>
+  </div>
+  
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+  </script>
+  
+  
+
+
+    <div class="container">
+        <div class="input-container">
+            <h1>Stock Historical Data</h1>
+            <form method="POST" class="form-grid">
+                <div class="form-group">
+                    <label for="ticker">Stock Ticker (e.g., RELIANCE.NS)</label>
+                    <input type="text" name="ticker" id="ticker" value="{{ form_data.ticker | default('') }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="interval">Interval</label>
+                    <select name="interval" id="interval">
+                        <option value="1d" {% if form_data.interval == '1d' %}selected{% endif %}>Daily</option>
+                        <option value="1wk" {% if form_data.interval == '1wk' %}selected{% endif %}>Weekly</option>
+                        <option value="1mo" {% if form_data.interval == '1mo' %}selected{% endif %}>Monthly</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="start_date">Start Date (YYYY-MM-DD)</label>
+                    <input type="text" name="start_date" id="start_date" value="{{ form_data.start_date | default('') }}" 
+                           placeholder="e.g., 2024-01-01" required>
+                </div>
+                <div class="form-group">
+                    <label for="end_date">End Date (YYYY-MM-DD)</label>
+                    <input type="text" name="end_date" id="end_date" value="{{ form_data.end_date | default('') }}" 
+                           placeholder="e.g., 2025-04-29" required>
+                </div>
+   <div class="form-group">
+    <div class="button-container">
+        <div class="loader"></div>
+        <button type="submit">Fetch Data</button>
+    </div>
+</div>
+
+</form>
+
+</div>
+
+                
+                <script>const form = document.querySelector('.form-grid'); // your form class
+const buttonContainer = document.querySelector('.button-container');
+
+form.addEventListener('submit', () => {
+    buttonContainer.classList.add('loading'); // show loader
+});
+
+</script>
+            </form>
+            
+        </div>
+        
+
+        {% if errors %}
+            <div class="error-message">
+                <ul>
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {% if historical_data %}
+            <div class="results-container">
+                <h2>Results for {{ historical_data.Ticker }}</h2>
+                <p>Showing top 30 entries</p>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Open</th>
+                            <th>High</th>
+                            <th>Low</th>
+                            <th>Close</th>
+                            <th>Volume</th>
+                            <th>Dividends</th>
+                            <th>Stock Splits</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in historical_data['Historical Data'][:30] %}
+                            <tr>
+                                <td>{{ entry.Date }}</td>
+                                <td>{{ entry.Open | round(2) }}</td>
+                                <td>{{ entry.High | round(2) }}</td>
+                                <td>{{ entry.Low | round(2) }}</td>
+                                <td>{{ entry.Close | round(2) }}</td>
+                                <td>{{ entry.Volume | int }}</td>
+                                <td>{{ entry.Dividends | round(2) }}</td>
+                                <td>{{ entry['Stock Splits'] | round(2) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if filename %}
+                    <div class="download-section">
+                        <a href="{{ url_for('app5.download_file', filename=filename) }}">Download JSON</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    <script>
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+const particleCount = 200; // more particles for density
+const middleGap = canvas.width * 0.35; // 35% middle empty
+
+class Particle {
+    constructor() {
+        const side = Math.random() < 0.5 ? 'left' : 'right';
+        if (side === 'left') {
+            this.x = Math.random() * ((canvas.width - middleGap) / 2);
+        } else {
+            this.x = Math.random() * ((canvas.width - middleGap) / 2) + (canvas.width + middleGap) / 2;
+        }
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.3; // slower horizontal movement
+        this.vy = (Math.random() - 0.5) * 0.3; // slower vertical movement
+        this.radius = 0.8 + Math.random() * 1; // smaller dots
+        this.alpha = 0.2 + Math.random() * 0.4; // transparency
+        this.alphaDirection = Math.random() < 0.5 ? 0.005 : -0.005; // twinkle effect
+    }
+
+    move() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Bounce within side areas
+        if (this.x < 0 || (this.x > (canvas.width - middleGap) / 2 && this.x < canvas.width / 2 - middleGap / 2)) this.vx *= -1;
+        if (this.x > canvas.width || (this.x < (canvas.width + middleGap) / 2 && this.x > canvas.width / 2 + middleGap / 2)) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+        // Twinkle effect
+        this.alpha += this.alphaDirection;
+        if (this.alpha >= 0.6 || this.alpha <= 0.2) this.alphaDirection *= -1;
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        ctx.fill();
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let p of particles) {
+        p.move();
+        p.draw();
+    }
+    requestAnimationFrame(animate);
+}
+
+function initParticles() {
+    particles = [];
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+    }
+}
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    initParticles();
+});
+
+initParticles();
+animate();
+</script>
+
+
+</body>
+</html>

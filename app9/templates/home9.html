@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Price Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #2a2a2a;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #2a2a2a;
+            padding: 10px;
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 50px;
+            display: flex;
+            flex-direction: column;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .stock-cards {
+            flex-grow: 1;
+            margin-top: 10px;
+        }
+
+        .stock-card {
+            background-color: #3a3a3a;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .stock-card:hover {
+            background-color: #4a4a4a;
+        }
+
+        .stock-card img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .stock-card div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stock-card .stock-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .stock-card .stock-price {
+            font-size: 12px;
+            color: #00ffcc;
+        }
+
+        .main-content {
+            margin-left: 220px;
+            padding: 20px;
+            flex-grow: 1;
+            margin-top: 50px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .chart-container {
+            flex: 2;
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            height: 400px;
+            position: relative;
+        }
+
+        #datetime {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        #stockChart {
+            width: 100%;
+            height: 100%;
+        }
+
+        #chartImg {
+            display: none;
+        }
+
+        .timeframe-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .timeframe-button {
+            background-color: #3a3a3a;
+            border: 1px solid #00ffcc;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .timeframe-button.active {
+            background-color: #00ffcc;
+            color: #1a1a1a;
+        }
+
+        .timeframe-button:hover {
+            background-color: #00ccaa;
+            color: #1a1a1a;
+        }
+
+        .input-container {
+            flex: 1;
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .input-container h2 {
+            margin-top: 0;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        #ticker {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #2a2a2a;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #3a3a3a;
+        }
+
+        button {
+            background-color: #00ffcc;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #1a1a1a;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #00ccaa;
+        }
+
+        .loader {
+            display: none;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00ffcc;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #result, #marketStatus, #details {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .details-container {
+            margin-top: 20px;
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .stats-charts-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stats-table-container {
+            flex: 1;
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .stats-table th, .stats-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        .stats-table th {
+            color: #00ffcc;
+            font-weight: bold;
+        }
+
+        .stats-table td {
+            color: white;
+        }
+
+        .additional-charts-container {
+            flex: 2;
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            height: 280px;
+        }
+
+        #volumeChart {
+            width: 100%;
+            height: 120%;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Stock Price Tracker</div>
+    <div class="sidebar">
+        <div class="stock-cards" id="stockCards">
+            <!-- Stock cards will be populated dynamically -->
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="container">
+            <!-- Left Side: Chart and Date -->
+            <div class="chart-container">
+                <div id="datetime"></div>
+                <div class="timeframe-buttons">
+                    <button class="timeframe-button" data-timeframe="1y">1Y</button>
+                    <button class="timeframe-button active" data-timeframe="5y">5Y</button>
+                    <button class="timeframe-button" data-timeframe="max">Max</button>
+                </div>
+                <canvas id="stockChart"></canvas>
+                <img id="chartImg" src="" alt="Historical Chart">
+            </div>
+
+            <!-- Right Side: Input Form -->
+            <div class="input-container">
+                <h2>Stock Price Tracker</h2>
+                <form id="tickerForm">
+                    <label for="ticker">Enter Stock Ticker:</label>
+                    <div class="search-container">
+                        <input type="text" id="ticker" name="ticker" placeholder="e.g., RELIANCE.NS" required>
+                        <div class="suggestions" id="suggestions"></div>     
+                    </div>
+                    <button type="submit">Get Price</button>
+                </form>
+                <div class="loader" id="loader"></div>
+                <div id="result"></div>
+                <div id="marketStatus"></div>
+            </div>
+        </div>
+
+        <!-- Statistical Table and Additional Charts -->
+        <div class="stats-charts-container">
+            <div class="stats-table-container">
+                <h3>Key Statistics</h3>
+                <table class="stats-table" id="statsTable">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Open</td><td id="stat-open">-</td></tr>
+                        <tr><td>High</td><td id="stat-high">-</td></tr>
+                        <tr><td>Low</td><td id="stat-low">-</td></tr>
+                        <tr><td>Close</td><td id="stat-close">-</td></tr>
+                        <tr><td>Volume</td><td id="stat-volume">-</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="additional-charts-container">
+                <canvas id="volumeChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Separate Details Section -->
+        <div class="details-container">
+            <div id="details"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('stockChart').getContext('2d');
+            const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+            let chartLabel = 'Stock Price';
+            let currentTicker = null;
+            let pollingInterval = null;
+            let fullHistoricalData = null;
+            let currentTimeframe = '5y';
+
+            // Sample JSON data for autocomplete suggestions and sidebar
+            const jsonData = [
+                {
+                    "name": "3M India Ltd",
+                    "code": "3MINDIA.NS",
+                    "image": "https://logosmarcas.net/wp-content/uploads/2022/02/3M-Simbolo.png"
+                },
+                {
+                    "name": "Aarti Industries Ltd",
+                    "code": "AARTIIND.NS",
+                    "image": "https://companieslogo.com/img/orig/AARTIIND.NS-9c2cfd45.png?t=1613409100"
+                },
+                {
+                    "name": "ABB India Ltd",
+                    "code": "ABB.NS",
+                    "image": "https://seekvectors.com/storage/images/6b84dc4fb705ba7df8405f6180c6d5d5.jpg"
+                }
+            ];
+
+            const uniqueData = [...new Map(jsonData.map(item => [item.name, item])).values()];
+            const data = uniqueData.map(item => item.name).sort((a, b) => a.localeCompare(b));
+            const nameToCodeMap = Object.fromEntries(uniqueData.map(item => [item.name, item.code]));
+            const stockData = uniqueData;
+
+            const stockChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: chartLabel,
+                        data: [],
+                        borderColor: '#00ffcc',
+                        backgroundColor: 'rgba(0, 255, 204, 0.1)',
+                        tension: 0.3,
+                        pointRadius: 1,
+                        pointHitRadius: 5,
+                        pointBackgroundColor: '#00ffcc',
+                        pointBorderColor: '#00ffcc',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            display: false,
+                            ticks: { color: 'white' }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Price (USD)',
+                                color: 'white'
+                            },
+                            beginAtZero: false,
+                            ticks: { color: 'white' }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: { color: 'white' }
+                        }
+                    }
+                }
+            });
+
+            const volumeChart = new Chart(volumeCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Volume',
+                        data: [],
+                        backgroundColor: 'rgba(0, 255, 204, 0.5)',
+                        borderColor: '#00ffcc',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            display: false,
+                            ticks: { color: 'white' }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Volume',
+                                color: 'white'
+                            },
+                            beginAtZero: true,
+                            ticks: { color: 'white' }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: { color: 'white' }
+                        }
+                    }
+                }
+            });
+
+            const form = document.getElementById('tickerForm');
+            const tickerInput = document.getElementById('ticker');
+            const suggestionsBox = document.getElementById('suggestions');
+            const resultDiv = document.getElementById('result');
+            const marketStatusDiv = document.getElementById('marketStatus');
+            const detailsDiv = document.getElementById('details');
+            const loader = document.getElementById('loader');
+            const stockCardsContainer = document.getElementById('stockCards');
+            const timeframeButtons = document.querySelectorAll('.timeframe-button');
+
+            // Function to filter data by timeframe
+            function filterDataByTimeframe(data, timeframe) {
+                if (!data || !data.labels || !data.prices || !data.volumes) return null;
+
+                const filteredData = { labels: [], prices: [], volumes: [] };
+
+                if (timeframe === 'max') {
+                    filteredData.labels = data.labels;
+                    filteredData.prices = data.prices;
+                    filteredData.volumes = data.volumes;
+                } else {
+                    const now = new Date();
+                    let startDate;
+                    if (timeframe === '1y') {
+                        startDate = new Date(now.setFullYear(now.getFullYear() - 1));
+                    } else if (timeframe === '5y') {
+                        startDate = new Date(now.setFullYear(now.getFullYear() - 5));
+                    }
+
+                    data.labels.forEach((label, index) => {
+                        const labelDate = new Date(label);
+                        if (labelDate >= startDate) {
+                            filteredData.labels.push(label);
+                            filteredData.prices.push(data.prices[index]);
+                            filteredData.volumes.push(data.volumes[index]);
+                        }
+                    });
+                }
+
+                return filteredData;
+            }
+
+            // Function to update charts with filtered data
+            function updateChartWithTimeframe(timeframe) {
+                if (!fullHistoricalData) return;
+
+                const filteredData = filterDataByTimeframe(fullHistoricalData, timeframe);
+                if (filteredData) {
+                    chartLabel = `${currentTicker} Closing Price (${
+                        timeframe === '1y' ? 'Last Year' :
+                        timeframe === '5y' ? 'Last 5 Years' :
+                        'Maximum Historical'
+                    })`;
+                    stockChart.data.datasets[0].label = chartLabel;
+                    stockChart.data.labels = filteredData.labels;
+                    stockChart.data.datasets[0].data = filteredData.prices;
+                    stockChart.options.scales.x.display = false;
+                    stockChart.update();
+
+                    volumeChart.data.labels = filteredData.labels;
+                    volumeChart.data.datasets[0].data = filteredData.volumes;
+                    volumeChart.options.scales.x.display = false;
+                    volumeChart.update();
+                }
+            }
+
+            // Function to update stats table
+            function updateStatsTable(stats) {
+                document.getElementById('stat-open').textContent = stats.open ? `$${stats.open.toFixed(2)}` : '-';
+                document.getElementById('stat-high').textContent = stats.high ? `$${stats.high.toFixed(2)}` : '-';
+                document.getElementById('stat-low').textContent = stats.low ? `$${stats.low.toFixed(2)}` : '-';
+                document.getElementById('stat-close').textContent = stats.close ? `$${stats.close.toFixed(2)}` : '-';
+                document.getElementById('stat-volume').textContent = stats.volume ? stats.volume.toLocaleString() : '-';
+            }
+
+            // Event listeners for timeframe buttons
+            timeframeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    timeframeButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentTimeframe = button.dataset.timeframe;
+                    updateChartWithTimeframe(currentTimeframe);
+                });
+            });
+
+            // Function to populate stock cards
+            function populateStockCards(stocks) {
+                if (!stockCardsContainer) {
+                    console.error('Stock cards container not found!');
+                    return;
+                }
+                stockCardsContainer.innerHTML = '';
+                stocks.forEach(stock => {
+                    const card = document.createElement('div');
+                    card.className = 'stock-card';
+                    card.innerHTML = `
+                        <img src="${stock.image}" alt="${stock.name}">
+                        <div>
+                            <div class="stock-name">${stock.name}</div>
+                            <div class="stock-price" id="price-${stock.code}">Loading...</div>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => {
+                        tickerInput.value = stock.code;
+                        form.dispatchEvent(new Event('submit'));
+                    });
+                    stockCardsContainer.appendChild(card);
+                    fetchStockPrice(stock.code);
+                });
+            }
+
+            // Function to fetch stock price for sidebar
+            async function fetchStockPrice(ticker) {
+                try {
+                    const response = await fetch('/get_price', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `ticker=${encodeURIComponent(ticker)}`
+                    });
+                    const data = await response.json();
+                    const priceElement = document.getElementById(`price-${ticker}`);
+                    if (response.ok && data.price !== null && data.price !== undefined) {
+                        priceElement.textContent = `$${data.price}`;
+                    } else {
+                        priceElement.textContent = 'N/A';
+                    }
+                } catch (error) {
+                    const priceElement = document.getElementById(`price-${ticker}`);
+                    if (priceElement) {
+                        priceElement.textContent = 'Error';
+                    }
+                    console.error('Error fetching price for', ticker, error);
+                }
+            }
+
+            // Initialize stock cards
+            populateStockCards(stockData);
+
+            // Function to show suggestions
+            function showSuggestions(input) {
+                suggestionsBox.innerHTML = '';
+                suggestionsBox.className = 'suggestions';
+                if (!input) {
+                    suggestionsBox.style.display = 'none';
+                    return;
+                }
+
+                const filteredData = data.filter(item => 
+                    item.toLowerCase().startsWith(input.toLowerCase())
+                );
+
+                if (filteredData.length > 0) {
+                    filteredData.forEach(item => {
+                        const suggestionDiv = document.createElement('div');
+                        suggestionDiv.className = 'suggestion-item';
+                        suggestionDiv.textContent = item;
+                        suggestionDiv.addEventListener('click', () => {
+                            tickerInput.value = nameToCodeMap[item];
+                            suggestionsBox.style.display = 'none';
+                            form.dispatchEvent(new Event('submit'));
+                        });
+                        suggestionsBox.appendChild(suggestionDiv);
+                    });
+                    suggestionsBox.style.display = 'block';
+                } else {
+                    suggestionsBox.style.display = 'none';
+                }
+            }
+
+            // Event listener for input
+            tickerInput.addEventListener('input', () => {
+                showSuggestions(tickerInput.value);
+            });
+
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!tickerInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+                    suggestionsBox.style.display = 'none';
+                }
+            });
+
+            // Update date and time in US Eastern Time
+            function updateDateTime() {
+                const now = new Date();
+                const options = {
+                    timeZone: 'America/New_York',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                };
+                document.getElementById('datetime').textContent = now.toLocaleString('en-US', options);
+            }
+            setInterval(updateDateTime, 1000);
+            updateDateTime();
+
+            // Function to fetch stock price
+            const fetchPrice = async (ticker) => {
+                try {
+                    const response = await fetch('/get_price', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `ticker=${encodeURIComponent(ticker)}`
+                    });
+
+                    const data = await response.json();
+
+                    detailsDiv.textContent = data.details ? `Details:\n${data.details}` : 'No details available.';
+
+                    if (response.ok) {
+                        // Update stats table with latest data
+                        if (data.stats) {
+                            updateStatsTable(data.stats);
+                        } else {
+                            updateStatsTable({ open: null, high: null, low: null, close: null, volume: null });
+                        }
+
+                        // Always show historical data on the chart
+                        if (data.historical_data) {
+                            fullHistoricalData = data.historical_data;
+                            updateChartWithTimeframe(currentTimeframe);
+                        } else {
+                            resultDiv.textContent = 'No historical data available.';
+                            marketStatusDiv.textContent = data.error || 'Market is closed.';
+                            stopPolling();
+                            updateStatsTable({ open: null, high: null, low: null, close: null, volume: null });
+                            return;
+                        }
+
+                        // Display current price and market status
+                        if (data.market_open) {
+                            if (data.price !== null && data.price !== undefined) {
+                                resultDiv.textContent = `${data.ticker}: $${data.price} at ${data.time}`;
+                                marketStatusDiv.textContent = 'Market is open.';
+                            } else {
+                                resultDiv.textContent = 'No recent price available.';
+                                marketStatusDiv.textContent = 'Market is open.';
+                            }
+                            startPolling(ticker);
+                        } else {
+                            let marketMessage = data.error || 'Market is closed.';
+                            if (data.price !== null && data.price !== undefined) {
+                                marketMessage += ` Last available price: $${data.price}`;
+                            } else {
+                                marketMessage += ' No recent price available.';
+                            }
+                            resultDiv.textContent = '';
+                            marketStatusDiv.textContent = marketMessage;
+                            stopPolling();
+                        }
+                    } else {
+                        resultDiv.textContent = data.error || 'Error fetching price.';
+                        marketStatusDiv.textContent = '';
+                        updateStatsTable({ open: null, high: null, low: null, close: null, volume: null });
+                        stopPolling();
+                    }
+                } catch (error) {
+                    resultDiv.textContent = 'Error connecting to server.';
+                    marketStatusDiv.textContent = '';
+                    detailsDiv.textContent = 'Error fetching details.';
+                    updateStatsTable({ open: null, high: null, low: null, close: null, volume: null });
+                    stopPolling();
+                    console.error('Error:', error);
+                } finally {
+                    loader.style.display = 'none';
+                }
+            };
+
+            // Start polling for real-time updates
+            const startPolling = (ticker) => {
+                stopPolling();
+                pollingInterval = setInterval(async () => {
+                    await fetchPrice(ticker);
+                    if (marketStatusDiv.textContent !== 'Market is open.') {
+                        stopPolling();
+                    }
+                }, 30000);
+            };
+
+            // Stop polling
+            const stopPolling = () => {
+                if (pollingInterval) {
+                    clearInterval(pollingInterval);
+                    pollingInterval = null;
+                }
+            };
+
+            // Form submission handler
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                let ticker = tickerInput.value.toUpperCase();
+                if (!ticker) {
+                    resultDiv.textContent = 'Please enter a ticker.';
+                    return;
+                }
+                currentTicker = ticker;
+                loader.style.display = 'block';
+                resultDiv.textContent = '';
+                detailsDiv.textContent = '';
+                stockChart.data.labels = [];
+                stockChart.data.datasets[0].data = [];
+                volumeChart.data.labels = [];
+                volumeChart.data.datasets[0].data = [];
+                stockChart.update();
+                volumeChart.update();
+                updateStatsTable({ open: null, high: null, low: null, close: null, volume: null });
+                suggestionsBox.style.display = 'none';
+                await fetchPrice(ticker);
+            });
+
+            window.addEventListener('unload', stopPolling);
+        });
+    </script>
+</body>
+</html>

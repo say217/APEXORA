@@ -1,5 +1,4 @@
-# <img src="https://github.com/user-attachments/assets/4e781cc9-d9eb-41dd-97ae-a6d676d6177b" alt="Icon" width="50" height="50" style="border-radius:50%; vertical-align: -10px;"> APEXORA.      (not deployed comming soon)
-
+# <img src="https://github.com/user-attachments/assets/4e781cc9-d9eb-41dd-97ae-a6d676d6177b" alt="Icon" width="50" height="50" style="border-radius:50%; vertical-align: -10px;"> APEXORA.    
 ## Introduction
 
 Apexora is an **AI-driven, multi-model prediction and advanced statistical analysis platform** designed for comprehensive stock market insights. It integrates financial data, sentiment analysis, and machine learning to empower investors, traders, and developers. By combining real-time stock metrics, news sentiment, social media insights, and predictive modeling, Apexora provides a deep and actionable understanding of market trends. Its modular Flask-based architecture ensures flexibility and scalability, allowing seamless customization for both personal and enterprise applications.

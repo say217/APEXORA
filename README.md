@@ -94,22 +94,13 @@ multi_model_prediction/
 │ │ └── index.html
 │ ├── run.py
 │ └── README.md
-├── docker/ # Docker configuration
-│ └── Dockerfile
 └── atock & crypto prediction model/ # for multi-model predictions
 ├── app.py
 ├── templates/
 ├── static/
 └── README.md
 
-✨ Notes:  
-- Each `app` handles a specific functionality, ensuring modularity and easy maintenance.  
-- `docker/` contains your Dockerfile for containerization.  
-- `multi_model_app/` is the outer folder for prediction apps, with its own `app.py`, templates, and static assets.  
 
-If you want, I can also **draw a visual diagram of the folder structure** for your README so it looks professional and easy to understand.  
-
-Do you want me to do that?
 
 ```
 ---

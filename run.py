@@ -1,11 +1,11 @@
-from app1 import create_app as create_app1
+ from app1 import create_app as create_app1
 from app2 import create_app as create_app2
 from app3 import create_app as create_app3
 from app4 import create_app as create_app4
 from app5 import create_app as create_app5
 from app6 import create_app as create_app6
 from app7 import create_app as create_app7
-from app8 import create_app as create_app8
+from app8 import create_app as create_app8    
 from app9 import create_app as create_app9
 from flask import Flask, redirect, url_for, session
 
